@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="slider-pane">
+    <div class="slider-labels">
+        <span id="label-after">{{ default_after | fmt_month }}</span>
+        <span class="muted">→</span>
+        <span id="label-before">{{ default_before | fmt_month }}</span>
+    </div>
+    <div id="range-slider"
+         data-min="{{ min_ts }}"
+         data-max="{{ max_ts }}"
+         data-after="{{ default_after }}"
+         data-before="{{ default_before }}"></div>
+    <div class="presets">
+        <button type="button" data-preset="last-year">Last year</button>
+        <button type="button" data-preset="halloween-2014">Halloween 2014</button>
+        <button type="button" data-preset="golden">Golden era (2012–2018)</button>
+        <button type="button" data-preset="all">All time</button>
+        <label class="limit">
+            Show top
+            <select id="limit-select">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </label>
+    </div>
+</section>
+
+<section id="results"
+         hx-get="/api/top?after={{ default_after }}&before={{ default_before }}&limit=25"
+         hx-trigger="load"
+         hx-swap="innerHTML">
+    <p class="muted">Loading…</p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/slider.js"></script>
+{% endblock %}

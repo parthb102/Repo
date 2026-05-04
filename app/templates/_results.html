@@ -1,0 +1,25 @@
+<header class="results-header">
+    <h2>Top {{ count }} stories</h2>
+    <p class="muted">{{ after | fmt_date }} → {{ before | fmt_date }}</p>
+</header>
+{% if posts %}
+<ol class="post-list">
+    {% for p in posts %}
+    <li>
+        <a class="post-title" href="/post/{{ p.id }}?after={{ after }}&before={{ before }}">{{ p.title }}</a>
+        <div class="post-meta">
+            <span>↑ {{ p.score }}</span>
+            <span>·</span>
+            <span>{{ p.num_comments or 0 }} comments</span>
+            <span>·</span>
+            <span>{{ p.created_utc | fmt_date }}</span>
+            <span>·</span>
+            <span>u/{{ p.author or 'unknown' }}</span>
+            {% if p.flair %}<span class="flair">{{ p.flair }}</span>{% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ol>
+{% else %}
+<p class="muted empty">No archived posts in this window. Try a wider range, or run <code>python ingest.py</code> to populate the local archive.</p>
+{% endif %}

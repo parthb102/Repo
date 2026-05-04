@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} · r/nosleep{% endblock %}
+
+{% block headerextra %}
+<a class="back" href="/{{ back_qs }}">← back to results</a>
+{% endblock %}
+
+{% block content %}
+<article class="reader">
+    <h1>{{ post.title }}</h1>
+    <div class="reader-meta">
+        <span>u/{{ post.author or 'unknown' }}</span>
+        <span>·</span>
+        <span>{{ post.created_utc | fmt_date }}</span>
+        <span>·</span>
+        <span>↑ {{ post.score }}</span>
+        {% if post.flair %}<span class="flair">{{ post.flair }}</span>{% endif %}
+    </div>
+    {% if has_body %}
+        <div class="reader-body">{{ body_html | safe }}</div>
+    {% else %}
+        <p class="muted">
+            The body for this post isn't in the local archive and couldn't be fetched from Reddit
+            (the post may be deleted or removed).
+        </p>
+    {% endif %}
+    <footer class="reader-footer">
+        <a href="{{ post.permalink }}" target="_blank" rel="noopener noreferrer">
+            View original on reddit.com →
+        </a>
+    </footer>
+</article>
+{% endblock %}
