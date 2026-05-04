@@ -1,23 +1,20 @@
 from __future__ import annotations
 
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Query, Request
-from fastapi.responses import HTMLResponse, PlainTextResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from flask import Flask, abort, render_template, request
 from markdown_it import MarkdownIt
 
 from app import db, reddit
 
 BASE_DIR = Path(__file__).resolve().parent
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+app = Flask(
+    __name__,
+    template_folder=str(BASE_DIR / "templates"),
+    static_folder=str(BASE_DIR / "static"),
+)
 md = MarkdownIt("commonmark", {"breaks": True, "linkify": True})
-
-app = FastAPI(title="r/nosleep time machine")
-app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 
 def fmt_date(ts: int) -> str:
@@ -28,86 +25,78 @@ def fmt_month(ts: int) -> str:
     return datetime.fromtimestamp(int(ts), tz=timezone.utc).strftime("%b %Y")
 
 
-templates.env.filters["fmt_date"] = fmt_date
-templates.env.filters["fmt_month"] = fmt_month
+app.jinja_env.filters["fmt_date"] = fmt_date
+app.jinja_env.filters["fmt_month"] = fmt_month
 
 
-@app.get("/healthz", response_class=PlainTextResponse)
+@app.get("/healthz")
 def healthz() -> str:
     return "ok"
 
 
-@app.get("/", response_class=HTMLResponse)
-def index(request: Request) -> HTMLResponse:
+@app.get("/")
+def index():
     db.init_schema()
     mn, mx = db.date_bounds()
     default_after = max(mn, mx - 86400 * 365)
     default_before = mx
-    return templates.TemplateResponse(
-        request,
+    return render_template(
         "index.html",
-        {
-            "min_ts": mn,
-            "max_ts": mx,
-            "default_after": default_after,
-            "default_before": default_before,
-        },
+        min_ts=mn,
+        max_ts=mx,
+        default_after=default_after,
+        default_before=default_before,
     )
 
 
-@app.get("/api/top", response_class=HTMLResponse)
-def api_top(
-    request: Request,
-    after: int = Query(..., ge=0),
-    before: int = Query(..., ge=0),
-    limit: int = Query(25, ge=1, le=100),
-) -> HTMLResponse:
+@app.get("/api/top")
+def api_top():
+    try:
+        after = int(request.args.get("after", "0"))
+        before = int(request.args.get("before", "0"))
+        limit = int(request.args.get("limit", "25"))
+    except ValueError:
+        abort(400)
+    limit = max(1, min(limit, 100))
     if before < after:
         after, before = before, after
     rows = db.top_in_window(after, before, limit)
-    return templates.TemplateResponse(
-        request,
+    return render_template(
         "_results.html",
-        {
-            "posts": rows,
-            "after": after,
-            "before": before,
-            "limit": limit,
-            "count": len(rows),
-        },
+        posts=rows,
+        after=after,
+        before=before,
+        limit=limit,
+        count=len(rows),
     )
 
 
-@app.get("/post/{post_id}", response_class=HTMLResponse)
-async def reader(
-    request: Request,
-    post_id: str,
-    after: int | None = None,
-    before: int | None = None,
-) -> HTMLResponse:
+@app.get("/post/<post_id>")
+def reader(post_id: str):
     row = db.get_post(post_id)
     if row is None:
-        raise HTTPException(status_code=404, detail="post not in local archive")
+        abort(404, description="post not in local archive")
 
     selftext = row["selftext"]
     if not selftext:
-        fetched = await reddit.fetch_selftext(post_id)
+        fetched = reddit.fetch_selftext(post_id)
         if fetched:
             db.update_selftext(post_id, fetched)
             selftext = fetched
 
     body_html = md.render(selftext) if selftext else ""
-    back_qs = ""
-    if after is not None and before is not None:
-        back_qs = f"?after={after}&before={before}"
+    after = request.args.get("after")
+    before = request.args.get("before")
+    back_qs = f"?after={after}&before={before}" if after and before else ""
 
-    return templates.TemplateResponse(
-        request,
+    return render_template(
         "reader.html",
-        {
-            "post": row,
-            "body_html": body_html,
-            "has_body": bool(selftext),
-            "back_qs": back_qs,
-        },
+        post=row,
+        body_html=body_html,
+        has_body=bool(selftext),
+        back_qs=back_qs,
     )
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=8000, debug=True)

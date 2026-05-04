@@ -40,7 +40,8 @@ Useful flags:
 ## Run
 
 ```bash
-uvicorn app.main:app --reload
+python -m app.main
+# or:  flask --app app.main run --host 127.0.0.1 --port 8000
 ```
 
 Open http://127.0.0.1:8000.

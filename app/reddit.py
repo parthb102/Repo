@@ -10,12 +10,12 @@ USER_AGENT = "nosleep-reader/0.1 (local personal reader)"
 log = logging.getLogger(__name__)
 
 
-async def fetch_selftext(post_id: str) -> str | None:
+def fetch_selftext(post_id: str) -> str | None:
     url = f"https://www.reddit.com/comments/{post_id}.json?raw_json=1&limit=1"
     headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
     try:
-        async with httpx.AsyncClient(timeout=20, follow_redirects=True) as client:
-            r = await client.get(url, headers=headers)
+        with httpx.Client(timeout=20, follow_redirects=True) as client:
+            r = client.get(url, headers=headers)
             r.raise_for_status()
             data = r.json()
     except Exception as e:
