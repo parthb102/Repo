@@ -1,0 +1,438 @@
+#!/usr/bin/env python3
+"""Build the Platform Assessment Tracker workbook.
+
+One tab per capability, each with a clickable tracker, one assessment table
+per sub-capability (state / imperative-to-exit / exit-complexity dropdowns,
+auto gray-out of target & exception rows, auto tranche) and a live
+benefits-vs-complexity matrix that re-plots platform "bubbles" as scores
+change. A Summary tab rolls up tranche counts with jump links.
+
+Requires desktop Excel 2016+ (TEXTJOIN). No macros.
+"""
+
+import os
+
+from openpyxl import Workbook
+from openpyxl.formatting.rule import FormulaRule
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+from openpyxl.worksheet.datavalidation import DataValidation
+
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                   "Platform_Assessment_Tracker.xlsx")
+
+N_ROWS = 10  # platform rows provisioned per sub-capability
+
+CAPABILITIES = [
+    ("Boarding", ["Boarding Experience", "Ingress", "Boarding Orchestration",
+                  "Integration & Messaging", "Credit & Underwriting",
+                  "CPQ / Quote-pricing"]),
+    ("Single-in", ["Global API", "Payment Apps & SDKs", "Developer Experience",
+                   "Hosted Solutions", "Unified Proposition"]),
+    ("Sales & Servicing", ["CRM", "Servicing Tools", "Sales Automation",
+                           "Risks"]),
+    ("Payment Processing", ["Gateway", "Switch", "Clearing Back-end",
+                            "Authorization Host", "Transaction monitoring",
+                            "APMs/LPMs"]),
+    ("VAS", ["Routing", "Networking Payment Tokens", "DCC eDCC", "Fraud",
+             "Credential Management", "Gifts", "Managed Optimization",
+             "3DS / exemptions", "FX"]),
+    ("Unified Data and AI", ["Overall"]),
+    ("Global Infrastructure", ["Data Centers", "Cloud", "Observability",
+                               "Security", "AI Tools", "Design Systems"]),
+    ("Single-out", ["Portal", "Reporting", "Billing", "Disputes", "Payouts",
+                    "PFaaS Products"]),
+]
+
+TAB_COLORS = {
+    "Summary": "1F4E79", "Boarding": "2E75B6", "Single-in": "00B0F0",
+    "Sales & Servicing": "7030A0", "Payment Processing": "C00000",
+    "VAS": "ED7D31", "Unified Data and AI": "00B050",
+    "Global Infrastructure": "808080", "Single-out": "BF8F00",
+}
+
+# Illustrative rows from the source slide (Payment Processing -> Gateway).
+SEED = {
+    ("Payment Processing", "Gateway"): [
+        ("Edge", "Non-target state", "High", "High",
+         "Illustrative example from the slide - plots as Tranche 3"),
+        ("WP Total / Emboss", "Non-target state", "High", "Medium",
+         "Illustrative example from the slide - plots as Tranche 2"),
+        ("Innovo", "Non-target state", "Medium", "Low",
+         "Illustrative example from the slide - plots as Tranche 1"),
+        ("EWay", "Non-target state", "Medium", "Medium",
+         "Illustrative example from the slide - plots as Tranche 2"),
+        ("Unified Gateway (example)", "Target state", "", "",
+         "Example of a target-state platform - row grays out and is "
+         "excluded from the matrix"),
+    ],
+}
+
+NAVY = "1F4E79"
+HEADER_TINT = "DDEBF7"
+LINK = "0563C1"
+T1_FILL = "CDE4F5"
+T2_FILL = "FFF2CC"
+T3_FILL = "FBE2D5"
+GRAY_FILL = "D9D9D9"
+GRAYED_ROW_FILL = "F2F2F2"
+GRAYED_ROW_FONT = "A6A6A6"
+NOTE_GRAY = "595959"
+
+CIRCLED = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
+
+thin_gray = Side(style="thin", color="BFBFBF")
+thin_blue = Side(style="thin", color="4472C4")
+TABLE_BORDER = Border(left=thin_gray, right=thin_gray,
+                      top=thin_gray, bottom=thin_gray)
+MATRIX_BORDER = Border(left=thin_blue, right=thin_blue,
+                       top=thin_blue, bottom=thin_blue)
+
+
+def solid(color):
+    return PatternFill(fill_type="solid", start_color=color, end_color=color)
+
+
+# Matrix buckets: (imperative, complexity, matrix column, helper column,
+#                  tranche label or None, fill)
+BUCKETS = [
+    ("High", "Low", "K", "O", "Tranche 1", T1_FILL),
+    ("High", "Medium", "L", "P", "Tranche 2", T2_FILL),
+    ("High", "High", "M", "Q", "Tranche 3", T3_FILL),
+    ("Medium", "Low", "K", "R", "Tranche 1", T1_FILL),
+    ("Medium", "Medium", "L", "S", "Tranche 2", T2_FILL),
+    ("Medium", "High", "M", "T", None, GRAY_FILL),
+    ("Low", "Low", "K", "U", None, GRAY_FILL),
+    ("Low", "Medium", "L", "V", None, GRAY_FILL),
+    ("Low", "High", "M", "W", None, GRAY_FILL),
+]
+
+TABLE_HEADERS = ["#", "Platform", "State", "Imperative to exit",
+                 "Exit complexity", "Supporting facts", "Tranche (auto)"]
+
+COL_WIDTHS = {"A": 5, "B": 26, "C": 17, "D": 16, "E": 15, "F": 44, "G": 14,
+              "H": 2, "I": 4, "J": 9, "K": 26, "L": 26, "M": 26, "N": 2}
+
+
+def tranche_formula(r):
+    return (
+        f'=IF(OR($B{r}="",$D{r}="",$E{r}=""),"",'
+        f'IF(OR($C{r}="Target state",$C{r}="Exception"),"Out of scope",'
+        f'IF($D{r}="Low","No tranche",'
+        f'IF($E{r}="Low","Tranche 1",'
+        f'IF($E{r}="Medium","Tranche 2",'
+        f'IF($D{r}="High","Tranche 3","No tranche"))))))'
+    )
+
+
+def helper_formula(r, imperative, complexity):
+    return (
+        f'=IF(AND($B{r}<>"",$C{r}<>"Target state",$C{r}<>"Exception",'
+        f'$D{r}="{imperative}",$E{r}="{complexity}"),'
+        f'$A{r}&"  "&$B{r},"")'
+    )
+
+
+def write_section(ws, sheet_name, s, subcap, dv_state, dv_score):
+    """Write one sub-capability block whose header band sits on row s.
+
+    Returns (first_data_row, last_data_row).
+    """
+    r1, r2 = s + 2, s + 1 + N_ROWS
+
+    # --- section header band -------------------------------------------
+    for col in "ABCDEFG":
+        ws[f"{col}{s}"].fill = solid(NAVY)
+    hc = ws[f"A{s}"]
+    hc.value = subcap
+    hc.font = Font(bold=True, size=11, color="FFFFFF")
+    hc.alignment = Alignment(vertical="center", indent=1)
+    ws.merge_cells(f"A{s}:F{s}")
+    g = ws[f"G{s}"]
+    g.value = f'=HYPERLINK("#\'{sheet_name}\'!A4","▲ tracker")'
+    g.font = Font(size=9, color="FFFFFF", underline="single")
+    g.alignment = Alignment(horizontal="center", vertical="center")
+    ws.row_dimensions[s].height = 22
+
+    # --- table column headers -------------------------------------------
+    for i, h in enumerate(TABLE_HEADERS):
+        c = ws.cell(row=s + 1, column=1 + i, value=h)
+        c.fill = solid(HEADER_TINT)
+        c.font = Font(bold=True, size=9, color=NAVY)
+        c.alignment = Alignment(horizontal="center", vertical="center",
+                                wrap_text=True)
+        c.border = TABLE_BORDER
+    ws.row_dimensions[s + 1].height = 18
+
+    # --- data rows --------------------------------------------------------
+    for i in range(N_ROWS):
+        r = r1 + i
+        ws.row_dimensions[r].height = 20
+        a = ws[f"A{r}"]
+        a.value = CIRCLED[i]
+        a.alignment = Alignment(horizontal="center", vertical="center")
+        a.font = Font(size=11, color=NAVY)
+        ws[f"B{r}"].alignment = Alignment(vertical="center", indent=1)
+        ws[f"B{r}"].font = Font(size=10)
+        for col in "CDE":
+            c = ws[f"{col}{r}"]
+            c.alignment = Alignment(horizontal="center", vertical="center")
+            c.font = Font(size=10)
+        f = ws[f"F{r}"]
+        f.alignment = Alignment(vertical="center", wrap_text=True, indent=1)
+        f.font = Font(size=9)
+        gcell = ws[f"G{r}"]
+        gcell.value = tranche_formula(r)
+        gcell.font = Font(size=9, italic=True, color=NAVY)
+        gcell.alignment = Alignment(horizontal="center", vertical="center")
+        for col in "ABCDEFG":
+            ws[f"{col}{r}"].border = TABLE_BORDER
+        # hidden helper cells feeding the matrix
+        for imp, cpx, _mcol, hcol, _lbl, _fill in BUCKETS:
+            ws[f"{hcol}{r}"] = helper_formula(r, imp, cpx)
+
+    dv_state.add(f"C{r1}:C{r2}")
+    dv_score.add(f"D{r1}:E{r2}")
+
+    # gray out the whole row when the platform is target state or exception
+    ws.conditional_formatting.add(
+        f"A{r1}:G{r2}",
+        FormulaRule(
+            formula=[f'OR($C{r1}="Target state",$C{r1}="Exception")'],
+            fill=PatternFill(start_color=GRAYED_ROW_FILL,
+                             end_color=GRAYED_ROW_FILL, fill_type="solid"),
+            font=Font(color=GRAYED_ROW_FONT),
+        ),
+    )
+
+    # --- assessment matrix -----------------------------------------------
+    t = ws[f"K{s}"]
+    t.value = "Assessment Outcome"
+    t.font = Font(bold=True, size=11, color=NAVY)
+    t.alignment = Alignment(horizontal="center", vertical="center")
+    ws.merge_cells(f"K{s}:M{s}")
+
+    for col, lbl in zip("KLM", ["Low", "Medium", "High"]):
+        c = ws[f"{col}{s + 1}"]
+        c.value = lbl
+        c.font = Font(bold=True, size=9, color=NOTE_GRAY)
+        c.alignment = Alignment(horizontal="center", vertical="center")
+
+    for bi, band in enumerate(["High", "Medium", "Low"]):
+        top, bottom = s + 2 + 3 * bi, s + 4 + 3 * bi
+        jc = ws[f"J{top}"]
+        jc.value = band
+        jc.font = Font(bold=True, size=10, color=NOTE_GRAY)
+        jc.alignment = Alignment(horizontal="center", vertical="center")
+        ws.merge_cells(f"J{top}:J{bottom}")
+        for imp, cpx, mcol, hcol, lbl, fill in BUCKETS:
+            if imp != band:
+                continue
+            # _xlfn. prefix is how post-2007 functions must be stored in
+            # xlsx XML; Excel shows it as plain TEXTJOIN
+            tj = f"_xlfn.TEXTJOIN(CHAR(10),TRUE,{hcol}${r1}:{hcol}${r2})"
+            cell = ws[f"{mcol}{top}"]
+            cell.value = f'="{lbl}"&CHAR(10)&{tj}' if lbl else f"={tj}"
+            cell.font = Font(size=9, color="17375E" if lbl else "404040")
+            cell.alignment = Alignment(wrap_text=True, vertical="top",
+                                       horizontal="left", indent=1)
+            for rr in range(top, bottom + 1):
+                cc = ws[f"{mcol}{rr}"]
+                cc.fill = solid(fill)
+                cc.border = MATRIX_BORDER
+            ws.merge_cells(f"{mcol}{top}:{mcol}{bottom}")
+
+    ic = ws[f"I{s + 2}"]
+    ic.value = "Benefits"
+    ic.font = Font(bold=True, size=10, color=NOTE_GRAY)
+    ic.alignment = Alignment(horizontal="center", vertical="center",
+                             text_rotation=90)
+    ws.merge_cells(f"I{s + 2}:I{s + 10}")
+
+    cx = ws[f"K{s + 11}"]
+    cx.value = "Complexity"
+    cx.font = Font(bold=True, size=10, color=NOTE_GRAY)
+    cx.alignment = Alignment(horizontal="center", vertical="center")
+    ws.merge_cells(f"K{s + 11}:M{s + 11}")
+
+    return r1, r2
+
+
+def build_capability_sheet(wb, cap, subcaps):
+    ws = wb.create_sheet(cap)
+    ws.sheet_properties.tabColor = TAB_COLORS[cap]
+    ws.sheet_view.showGridLines = False
+    for col, w in COL_WIDTHS.items():
+        ws.column_dimensions[col].width = w
+    for col in "OPQRSTUVW":
+        ws.column_dimensions[col].hidden = True
+
+    ws["A1"] = f"{cap} — Platform Assessment"
+    ws["A1"].font = Font(bold=True, size=15, color=NAVY)
+    ws["A2"] = '=HYPERLINK("#\'Summary\'!A1","← Back to Summary")'
+    ws["A2"].font = Font(size=10, color=LINK, underline="single")
+    ws["C2"] = ("Pick a State, score High / Medium / Low — the tranche, the "
+                "matrix and the Summary update automatically.")
+    ws["C2"].font = Font(size=9, italic=True, color=NOTE_GRAY)
+
+    th = ws["A4"]
+    th.value = "Tracker — jump to a sub-capability:"
+    th.font = Font(bold=True, size=10, color=NAVY)
+    th.fill = solid(HEADER_TINT)
+    th.alignment = Alignment(vertical="center", indent=1)
+    for col in "BC":
+        ws[f"{col}4"].fill = solid(HEADER_TINT)
+    ws.merge_cells("A4:C4")
+
+    dv_state = DataValidation(
+        type="list",
+        formula1='"Target state,Non-target state,Exception"',
+        allow_blank=True)
+    dv_score = DataValidation(
+        type="list", formula1='"High,Medium,Low"', allow_blank=True)
+    ws.add_data_validation(dv_state)
+    ws.add_data_validation(dv_score)
+
+    n = len(subcaps)
+    section_rows = [n + 6 + i * (N_ROWS + 4) for i in range(n)]
+
+    sections = {}
+    for i, (subcap, s) in enumerate(zip(subcaps, section_rows)):
+        ws[f"A{5 + i}"] = f"{i + 1}."
+        ws[f"A{5 + i}"].alignment = Alignment(horizontal="right")
+        ws[f"A{5 + i}"].font = Font(size=10, color=NOTE_GRAY)
+        link = ws[f"B{5 + i}"]
+        link.value = f'=HYPERLINK("#\'{cap}\'!A{s}","{subcap}")'
+        link.font = Font(size=10, color=LINK, underline="single")
+        r1, r2 = write_section(ws, cap, s, subcap, dv_state, dv_score)
+        sections[subcap] = (s, r1, r2)
+
+    for (scap, ssub), rows in SEED.items():
+        if scap != cap:
+            continue
+        _s, r1, _r2 = sections[ssub]
+        for j, (name, state, imp, cpx, facts) in enumerate(rows):
+            r = r1 + j
+            ws[f"B{r}"] = name
+            ws[f"C{r}"] = state
+            ws[f"D{r}"] = imp
+            ws[f"E{r}"] = cpx
+            ws[f"F{r}"] = facts
+
+    return sections
+
+
+def build_summary(ws, all_sections):
+    ws.sheet_properties.tabColor = TAB_COLORS["Summary"]
+    ws.sheet_view.showGridLines = False
+    for col, w in {"A": 5, "B": 22, "C": 28, "D": 14, "E": 11, "F": 11,
+                   "G": 11, "H": 10}.items():
+        ws.column_dimensions[col].width = w
+
+    ws["A1"] = "Platform Assessment — Summary"
+    ws["A1"].font = Font(bold=True, size=16, color=NAVY)
+    ws["A2"] = "Tranche roll-up by capability and sub-capability — counts update automatically from each tab."
+    ws["A2"].font = Font(size=10, italic=True, color=NOTE_GRAY)
+
+    ws["A4"] = "How it works:"
+    ws["A4"].font = Font(bold=True, size=10, color=NAVY)
+    notes = [
+        "Every capability tab has a tracker at the top — click a sub-capability to jump straight to its section; each section links back.",
+        "For each platform pick a State: Target state and Exception rows gray out automatically and drop off the matrix; Non-target rows stay lit.",
+        "Score Imperative to exit and Exit complexity (High / Medium / Low) — the Tranche column computes itself and the matrix bubbles (① + platform name) re-plot live.",
+        "Tranche rules: Low complexity → Tranche 1  ·  Medium complexity → Tranche 2  ·  High complexity + High imperative → Tranche 3  ·  Low imperative (or Medium imperative + High complexity) → no tranche.",
+        "Payment Processing → Gateway is pre-seeded with the slide's illustrative examples — replace them with real data.",
+        "Built for desktop Excel 2016 or later (no macros).",
+    ]
+    for i, txt in enumerate(notes):
+        c = ws[f"A{5 + i}"]
+        c.value = "•  " + txt
+        c.font = Font(size=9, color=NOTE_GRAY)
+
+    hdr_row = 12
+    headers = ["#", "Capability", "Sub-capability", "Platforms listed",
+               "Tranche 1", "Tranche 2", "Tranche 3", "Open"]
+    hdr_fills = {"E": T1_FILL, "F": T2_FILL, "G": T3_FILL}
+    for i, h in enumerate(headers):
+        col = chr(ord("A") + i)
+        c = ws[f"{col}{hdr_row}"]
+        c.value = h
+        if col in hdr_fills:
+            c.fill = solid(hdr_fills[col])
+            c.font = Font(bold=True, size=10, color=NAVY)
+        else:
+            c.fill = solid(NAVY)
+            c.font = Font(bold=True, size=10, color="FFFFFF")
+        c.alignment = Alignment(horizontal="center", vertical="center",
+                                wrap_text=True)
+        c.border = TABLE_BORDER
+    ws.row_dimensions[hdr_row].height = 24
+
+    r = hdr_row + 1
+    idx = 1
+    for cap, subcaps in CAPABILITIES:
+        group_start = r
+        for subcap in subcaps:
+            s, r1, r2 = all_sections[cap][subcap]
+            ws[f"A{r}"] = idx
+            ws[f"C{r}"] = subcap
+            ws[f"D{r}"] = f"=COUNTA('{cap}'!$B${r1}:$B${r2})"
+            for col, lbl in zip("EFG", ["Tranche 1", "Tranche 2", "Tranche 3"]):
+                ws[f"{col}{r}"] = (
+                    f"=COUNTIF('{cap}'!$G${r1}:$G${r2},\"{lbl}\")")
+            ws[f"H{r}"] = f'=HYPERLINK("#\'{cap}\'!A{s}","Open →")'
+            ws[f"H{r}"].font = Font(size=10, color=LINK, underline="single")
+            ws[f"A{r}"].font = Font(size=9, color=NOTE_GRAY)
+            ws[f"A{r}"].alignment = Alignment(horizontal="center")
+            ws[f"C{r}"].font = Font(size=10)
+            for col in "DEFG":
+                ws[f"{col}{r}"].alignment = Alignment(horizontal="center")
+                ws[f"{col}{r}"].font = Font(size=10)
+            ws[f"H{r}"].alignment = Alignment(horizontal="center")
+            for col in "ABCDEFGH":
+                ws[f"{col}{r}"].border = TABLE_BORDER
+            ws.row_dimensions[r].height = 18
+            r += 1
+            idx += 1
+        b = ws[f"B{group_start}"]
+        b.value = cap
+        b.font = Font(bold=True, size=10, color=NAVY)
+        b.alignment = Alignment(horizontal="left", vertical="center",
+                                indent=1)
+        for rr in range(group_start, r):
+            ws[f"B{rr}"].fill = solid("EDF2F8")
+        if r - 1 > group_start:
+            ws.merge_cells(f"B{group_start}:B{r - 1}")
+
+    last_data = r - 1
+    ws[f"C{r}"] = "Total"
+    ws[f"C{r}"].font = Font(bold=True, size=10, color=NAVY)
+    ws[f"C{r}"].alignment = Alignment(horizontal="right", indent=1)
+    for col in "DEFG":
+        c = ws[f"{col}{r}"]
+        c.value = f"=SUM({col}{hdr_row + 1}:{col}{last_data})"
+        c.font = Font(bold=True, size=10, color=NAVY)
+        c.alignment = Alignment(horizontal="center")
+    for col in "ABCDEFGH":
+        ws[f"{col}{r}"].border = Border(top=Side(style="medium", color=NAVY))
+
+    ws.freeze_panes = f"A{hdr_row + 1}"
+
+
+def main():
+    wb = Workbook()
+    summary = wb.active
+    summary.title = "Summary"
+
+    all_sections = {}
+    for cap, subcaps in CAPABILITIES:
+        all_sections[cap] = build_capability_sheet(wb, cap, subcaps)
+
+    build_summary(summary, all_sections)
+
+    wb.properties.title = "Platform Assessment Tracker"
+    wb.save(OUT)
+    print(f"Wrote {OUT}")
+
+
+if __name__ == "__main__":
+    main()
