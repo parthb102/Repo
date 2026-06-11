@@ -51,7 +51,8 @@ TAB_COLORS = {
     "Global Infrastructure": "808080", "Single-out": "BF8F00",
 }
 
-# Illustrative rows from the source slide (Payment Processing -> Gateway).
+# Illustrative rows from the source slide (Payment Processing -> Gateway)
+# plus two demo rows for Boarding requested in the working session.
 SEED = {
     ("Payment Processing", "Gateway"): [
         ("Edge", "Non-target state", "High", "High",
@@ -65,6 +66,15 @@ SEED = {
         ("Unified Gateway (example)", "Target state", "", "",
          "Example of a target-state platform - row grays out and is "
          "excluded from the matrix"),
+    ],
+    ("Boarding", "Boarding Experience"): [
+        ("Example platform A (illustrative)", "Non-target state", "High",
+         "Low",
+         "Illustrative only - high imperative, low complexity plots as "
+         "Tranche 1. Replace with real data."),
+        ("Example platform B (illustrative)", "Exception", "", "",
+         "Illustrative exception - row grays out and is excluded from the "
+         "matrix. Capture the reason for the exception here."),
     ],
 }
 
@@ -275,10 +285,12 @@ BUCKETS = [
     ("Low", "High", "M", "W", None, GRAY_FILL),
 ]
 
-TABLE_HEADERS = ["#", "Platform", "State", "Imperative to exit",
+# "Imperative to exit" is explicitly equated with the matrix Benefits axis
+# so the two are never read as different dimensions.
+TABLE_HEADERS = ["#", "Platform", "State", "Imperative to exit (= Benefits)",
                  "Exit complexity", "Supporting facts", "Tranche (auto)"]
 
-COL_WIDTHS = {"A": 5, "B": 26, "C": 17, "D": 16, "E": 15, "F": 44, "G": 14,
+COL_WIDTHS = {"A": 5, "B": 26, "C": 17, "D": 19, "E": 15, "F": 44, "G": 14,
               "H": 2, "I": 4, "J": 9, "K": 26, "L": 26, "M": 26, "N": 2}
 
 
@@ -330,7 +342,7 @@ def write_section(ws, sheet_name, s, subcap, dv_state, dv_score):
         c.alignment = Alignment(horizontal="center", vertical="center",
                                 wrap_text=True)
         c.border = TABLE_BORDER
-    ws.row_dimensions[s + 1].height = 18
+    ws.row_dimensions[s + 1].height = 26
 
     # --- data rows --------------------------------------------------------
     for i in range(N_ROWS):
@@ -411,8 +423,8 @@ def write_section(ws, sheet_name, s, subcap, dv_state, dv_score):
             ws.merge_cells(f"{mcol}{top}:{mcol}{bottom}")
 
     ic = ws[f"I{s + 2}"]
-    ic.value = "Benefits"
-    ic.font = Font(bold=True, size=10, color=NOTE_GRAY)
+    ic.value = "Benefits (= Imperative to exit)"
+    ic.font = Font(bold=True, size=9, color=NOTE_GRAY)
     ic.alignment = Alignment(horizontal="center", vertical="center",
                              text_rotation=90)
     ws.merge_cells(f"I{s + 2}:I{s + 10}")
@@ -424,6 +436,157 @@ def write_section(ws, sheet_name, s, subcap, dv_state, dv_score):
     ws.merge_cells(f"K{s + 11}:M{s + 11}")
 
     return r1, r2
+
+
+def build_readme(wb):
+    ws = wb.create_sheet("Read me", 0)
+    ws.sheet_properties.tabColor = NAVY
+    ws.sheet_view.showGridLines = False
+    for col, w in {"A": 2.5, "B": 18, "C": 17, "D": 17, "E": 17,
+                   "F": 17, "G": 17, "H": 17}.items():
+        ws.column_dimensions[col].width = w
+
+    body_font = Font(size=10, color="404040")
+    lead_font = Font(size=10, bold=True, color=NAVY)
+
+    def section(r, text):
+        c = ws[f"B{r}"]
+        c.value = text
+        c.font = Font(bold=True, size=11, color=NAVY)
+        for col in "BCDEFGH":
+            ws[f"{col}{r}"].fill = solid(HEADER_TINT)
+        return r + 1
+
+    def line(r, text, font=None, indent=0):
+        c = ws[f"B{r}"]
+        c.value = text
+        c.font = font or body_font
+        c.alignment = Alignment(vertical="center", indent=indent)
+        return r + 1
+
+    ws["B1"] = "Exhibit B — Non-target platform tranching"
+    ws["B1"].font = Font(bold=True, size=16, color=NAVY)
+    ws["B2"] = ("TAM 2.0  ·  read this before filling in your capability "
+                "tab — the exercise itself takes about 15 minutes per area.")
+    ws["B2"].font = Font(size=10, italic=True, color=NOTE_GRAY)
+    ws["B3"] = '=HYPERLINK("#\'Summary\'!A1","Open the Summary →")'
+    ws["B3"].font = Font(size=10, color=LINK, underline="single")
+
+    r = section(5, "What this is")
+    r = line(r, "Every capability tab lists the current-state platforms per "
+                "sub-capability. Mark each platform Target / Non-target / "
+                "Exception, score the non-target ones High / Medium / Low on "
+                "two dimensions, and the sheet dispositions them into "
+                "Tranche 1 / 2 / 3 — the matrix and the Summary update "
+                "automatically.")
+    r = line(r, "This feeds the investment thesis (due end of June): which "
+                "dollars and pods can be freed up right away to redirect, "
+                "versus what takes longer. Classification only — pod sizing "
+                "for the exits is a separate, later step.")
+
+    r = section(r + 1, "The three states")
+    r = line(r, "Target state — go-forward platform. No scoring needed; the "
+                "row grays out and drops off the matrix.")
+    r = line(r, "Non-target state — platform we intend to exit. Score both "
+                "dimensions; it lands in a tranche.")
+    r = line(r, "Exception — stays for now for a documented reason (capture "
+                "it under Supporting facts); ideally exits eventually. Grays "
+                "out like target state.")
+
+    r = section(r + 1, "The tranches")
+    for fill, txt in [
+        (T1_FILL, "Tranche 1 — quick exits we can get out of fairly fast; "
+                  "frees up dollars and pods right away."),
+        (T2_FILL, "Tranche 2 — slightly more complex; some nuances and a "
+                  "somewhat longer timeline."),
+        (T3_FILL, "Tranche 3 — the most complex exits on a progressive "
+                  "timeline (e.g., Edge)."),
+        (GRAY_FILL, "No tranche — low imperative to exit, or medium "
+                    "imperative with high exit complexity; revisit later. "
+                    "Either way: no net-new investment on non-target "
+                    "platforms — critical / high-priority maintenance only."),
+    ]:
+        c = ws[f"B{r}"]
+        c.value = txt
+        c.font = body_font
+        c.alignment = Alignment(vertical="center", indent=1)
+        for col in "BCDEFGH":
+            ws[f"{col}{r}"].fill = solid(fill)
+        r += 1
+
+    r = section(r + 1, "How a platform lands in a tranche")
+    grid_top = r + 1
+    for col, lbl in zip("CDE", ["Low", "Medium", "High"]):
+        c = ws[f"{col}{grid_top - 1}"]
+        c.value = lbl
+        c.font = Font(bold=True, size=9, color=NOTE_GRAY)
+        c.alignment = Alignment(horizontal="center")
+    legend = [("High", ["Tranche 1", "Tranche 2", "Tranche 3"],
+               [T1_FILL, T2_FILL, T3_FILL]),
+              ("Medium", ["Tranche 1", "Tranche 2", "—"],
+               [T1_FILL, T2_FILL, GRAY_FILL]),
+              ("Low", ["—", "—", "—"],
+               [GRAY_FILL, GRAY_FILL, GRAY_FILL])]
+    for i, (band, labels, fills) in enumerate(legend):
+        rr = grid_top + i
+        b = ws[f"B{rr}"]
+        b.value = band
+        b.font = Font(bold=True, size=9, color=NOTE_GRAY)
+        b.alignment = Alignment(horizontal="right", vertical="center")
+        for col, lbl, fill in zip("CDE", labels, fills):
+            c = ws[f"{col}{rr}"]
+            c.value = lbl
+            c.font = Font(size=9, color="17375E")
+            c.alignment = Alignment(horizontal="center", vertical="center")
+            c.fill = solid(fill)
+            c.border = MATRIX_BORDER
+        ws.row_dimensions[rr].height = 18
+    r = grid_top + 3
+    r = line(r, "Rows: Imperative to exit (= Benefits)   ·   Columns: "
+                "Exit complexity",
+             Font(size=9, italic=True, color=NOTE_GRAY))
+
+    r = section(r + 1, "Scoring guidance (assessment criteria)")
+    r = line(r, "Imperative to exit (= Benefits) — cost savings / avoidance "
+                "(pods freed up, vendor licensing eliminated, budgeted spend "
+                "avoided), risk reduction (aging infrastructure, EOL "
+                "posture, security / vendor risk), downstream enablement "
+                "(migrations that can't proceed until the platform "
+                "converges).")
+    r = line(r, "Exit complexity — gap in target-platform readiness (target "
+                "not yet live, capability gaps to close), migration effort "
+                "(customer / transaction volume, partner involvement), tech "
+                "& integration lift (incremental pods, migration length, "
+                "integration depth into the heritage estate).")
+
+    r = section(r + 1, "How to fill in your tab")
+    steps = [
+        "1.  Open the Summary, find your sub-capability and click Open → "
+        "(or use the tracker at the top of each capability tab).",
+        "2.  Check the platform list is complete for your area — include "
+        "everything in current state, also platforms already flagged "
+        "non-strategic in the TAM platform repository (those are exactly "
+        "the ones to get rid of).",
+        "3.  Set State for each platform: Target state / Non-target state / "
+        "Exception.",
+        "4.  For non-target platforms set Imperative to exit (= Benefits) "
+        "and Exit complexity to High / Medium / Low — the Tranche column "
+        "and the matrix update automatically.",
+        "5.  Add one or two lines of backing rationale under Supporting "
+        "facts.",
+    ]
+    for s_txt in steps:
+        r = line(r, s_txt, indent=1)
+
+    r = section(r + 1, "Ground rules")
+    r = line(r, "Directionally correct beats precise — this is a first cut "
+                "with brief backing facts, not a science project. Office "
+                "hours are scheduled per domain to review and refine.")
+    r = line(r, "Payment Processing → Gateway and Boarding → Boarding "
+                "Experience contain illustrative examples — replace them "
+                "with real data.")
+    r = line(r, "Questions before your session: raise them in the domain "
+                "office hours or drop them in Supporting facts.")
 
 
 def build_capability_sheet(wb, cap, subcaps):
@@ -505,11 +668,12 @@ def build_summary(ws, all_sections):
     ws["A4"] = "How it works:"
     ws["A4"].font = Font(bold=True, size=10, color=NAVY)
     notes = [
+        "Start with the Read me tab — state and tranche definitions, scoring guidance and step-by-step instructions.",
         "Every capability tab has a tracker at the top — click a sub-capability to jump straight to its section; each section links back.",
         "For each platform pick a State: Target state and Exception rows gray out automatically and drop off the matrix; Non-target rows stay lit.",
-        "Score Imperative to exit and Exit complexity (High / Medium / Low) — the Tranche column computes itself and the matrix bubbles (① + platform name) re-plot live.",
+        "Score Imperative to exit (= Benefits) and Exit complexity (High / Medium / Low) — the Tranche column computes itself and the matrix bubbles (① + platform name) re-plot live.",
         "Tranche rules: Low complexity → Tranche 1  ·  Medium complexity → Tranche 2  ·  High complexity + High imperative → Tranche 3  ·  Low imperative (or Medium imperative + High complexity) → no tranche.",
-        "Payment Processing → Gateway is pre-seeded with the slide's illustrative examples — replace them with real data.",
+        "Payment Processing → Gateway and Boarding → Boarding Experience are pre-seeded with illustrative examples — replace them with real data.",
         "Built for desktop Excel 2016 or later (no macros).",
     ]
     for i, txt in enumerate(notes):
@@ -517,7 +681,7 @@ def build_summary(ws, all_sections):
         c.value = "•  " + txt
         c.font = Font(size=9, color=NOTE_GRAY)
 
-    hdr_row = 12
+    hdr_row = 13
     headers = ["#", "Capability", "Sub-capability", "SPOCs",
                "Platforms listed", "Tranche 1", "Tranche 2", "Tranche 3",
                "Open"]
@@ -603,6 +767,7 @@ def main():
     wb = Workbook()
     summary = wb.active
     summary.title = "Summary"
+    build_readme(wb)
 
     all_sections = {}
     for cap, subcaps in CAPABILITIES:
