@@ -11,6 +11,7 @@ Requires desktop Excel 2016+ (TEXTJOIN). No macros.
 """
 
 import os
+import re
 
 from openpyxl import Workbook
 from openpyxl.formatting.rule import FormulaRule
@@ -66,6 +67,174 @@ SEED = {
          "excluded from the matrix"),
     ],
 }
+
+# TAM 2.0 SPOC tracker extract: (capability, sub-capability, raw name cells
+# across the Product / Tech / Architecture columns). Rows with no names are
+# omitted. The empty Big Rock for Unified Data and AI maps to "Overall".
+SPOC_ROWS = [
+    ("Single-in", "Global API",
+     ["Alexander Dewison <AD72624@globalpayments.com>"]),
+    ("Single-in", "Payment Apps & SDKs",
+     ["Stuart Taylor, Scott Moser"]),
+    ("Single-in", "Developer Experience",
+     ["Alexander Dewison <AD72624@globalpayments.com>"]),
+    ("Single-in", "Hosted Solutions",
+     ["Alexander Dewison <AD72624@globalpayments.com>"]),
+    ("Single-in", "Unified Proposition",
+     ["Alexander Dewison <AD72624@globalpayments.com>"]),
+    ("Boarding", "Boarding Experience",
+     ["Alan Johnson <AJ16933@globalpayments.com>",
+      "Guthmiller, Lindsay (WP) <Lindsay.Guthmiller@worldpay.com>",
+      "Fredrick Mjema <FM83866@globalpayments.com>"]),
+    ("Boarding", "Boarding Experience",
+     ["Pritchett, David (WP) <david.pritchett@worldpay.com>"]),
+    ("Boarding", "Boarding Orchestration",
+     ["Alan Johnson <AJ16933@globalpayments.com>",
+      "Vivek Pujeri <VP16572@globalpayments.com>",
+      "Bateman, Patrick (WP) <Patrick.Bateman@worldpay.com>"]),
+    ("Boarding", "Boarding Orchestration",
+     ["Fishel, Rebecca (WP) <rebecca.fishel@worldpay.com>"]),
+    ("Boarding", "Boarding Orchestration",
+     ["Bossenbroek, Bradley (WP) <Bradley.Bossenbroek@Worldpay.com>"]),
+    ("Sales & Servicing", "CRM",
+     ["White, Khali (WP) <khali.white@worldpay.com>; ",
+      "Guthmiller, Lindsay (WP) <Lindsay.Guthmiller@worldpay.com>"]),
+    ("Sales & Servicing", "CRM",
+     ["Girard, Tuarai (WP) <Tuarai.Girard@Worldpay.com>",
+      "Vivek Pujeri <VP16572@globalpayments.com>"]),
+    ("Sales & Servicing", "CRM",
+     ["Wright, Charlie (WP) <Charlie.Wright@Worldpay.com>",
+      "Jason Randall <JR29366@globalpayments.com>"]),
+    ("Sales & Servicing", "Servicing Tools",
+     ["White, Khali (WP) <khali.white@worldpay.com>; ",
+      "Guthmiller, Lindsay (WP) <Lindsay.Guthmiller@worldpay.com>"]),
+    ("Sales & Servicing", "Servicing Tools",
+     ["Girard, Tuarai (WP) <Tuarai.Girard@Worldpay.com>",
+      "Vivek Pujeri <VP16572@globalpayments.com>"]),
+    ("Sales & Servicing", "Servicing Tools",
+     ["Wright, Charlie (WP) <Charlie.Wright@Worldpay.com>",
+      "Jason Randall <JR29366@globalpayments.com>"]),
+    ("Sales & Servicing", "Sales Automation",
+     ["Jake Gwinn <jake.gwinn@globalpayments.com>"]),
+    ("Payment Processing", "Clearing Back-end",
+     ["Mike Clark <MC98382@globalpayments.com>",
+      "Ringer, Philip (WP) <Philip.Ringer@worldpay.com>",
+      "Beere, Jon (WP) <jon.beere@worldpay.com>"]),
+    ("Payment Processing", "Clearing Back-end",
+     ["Alan Bainbridge <AB61694@globalpayments.com>",
+      "Jones, Richard (WP) <Richard.Jones@worldpay.com>"]),
+    ("Payment Processing", "Clearing Back-end",
+     ["Downey, Peter (WP) <Peter.Downey@worldpay.com>"]),
+    ("Payment Processing", "Authorization Host",
+     ["Mike Clark <MC98382@globalpayments.com>",
+      "Ringer, Philip (WP) <Philip.Ringer@worldpay.com>",
+      "Beere, Jon (WP) <jon.beere@worldpay.com>"]),
+    ("Payment Processing", "Authorization Host",
+     ["Anushree Kolhe <AK31134@globalpayments.com>"]),
+    ("Payment Processing", "Authorization Host",
+     ["Annunziata, James (WP) <James.Annunziata@worldpay.com>"]),
+    ("VAS", "Routing",
+     ["Harding, Jason (WP) <jason.harding@worldpay.com>",
+      "Srini Turlapati <ST64774@globalpayments.com>",
+      "Dubreuil, Andre (WP) <andre.dubreuil@worldpay.com>"]),
+    ("VAS", "Routing",
+     ["Thakkar, Sunny (WP) <sunny.thakkar@worldpay.com>"]),
+    ("VAS", "Networking Payment Tokens",
+     ["Harding, Jason (WP) <jason.harding@worldpay.com>",
+      "Srini Turlapati <ST64774@globalpayments.com>"]),
+    ("VAS", "DCC eDCC",
+     ["Lang, Marcus (WP) <marcus.lang2@worldpay.com>",
+      "Joshi, VikramSuhas (WP) <VikramSuhas.Joshi@worldpay.com>"]),
+    ("VAS", "DCC eDCC",
+     ["Jaroslav Farkas <jf61853@globalpayments.com>"]),
+    ("VAS", "Fraud",
+     ["Moore, Justin (WP) <justin.moore@worldpay.com>",
+      "Srini Turlapati <ST64774@globalpayments.com>"]),
+    ("VAS", "Credential Management",
+     ["Harding, Jason (WP) <jason.harding@worldpay.com>",
+      "Srini Turlapati <ST64774@globalpayments.com>",
+      "Dubreuil, Andre (WP) <andre.dubreuil@worldpay.com>"]),
+    ("VAS", "Gifts",
+     ["Genessa Prictor <GP64946@globalpayments.com>",
+      "Srini Turlapati <ST64774@globalpayments.com>"]),
+    ("VAS", "Gifts",
+     ["Nail, John (WP) <john.nail@worldpay.com>"]),
+    ("VAS", "Managed Optimization",
+     ["Harding, Jason (WP) <jason.harding@worldpay.com>",
+      "Srini Turlapati <ST64774@globalpayments.com>",
+      "Dubreuil, Andre (WP) <andre.dubreuil@worldpay.com>"]),
+    ("VAS", "3DS / exemptions",
+     ["Thakkar, Sunny (WP) <sunny.thakkar@worldpay.com>",
+      "Srini Turlapati <ST64774@globalpayments.com>"]),
+    ("VAS", "FX",
+     ["Srini Turlapati <ST64774@globalpayments.com>"]),
+    ("VAS", "FX",
+     ["Joshi, VikramSuhas (WP) <VikramSuhas.Joshi@worldpay.com>"]),
+    ("Unified Data and AI", "Overall",
+     ["Heaton, Ryan (WP) <ryan.heaton@worldpay.com>"]),
+    ("Unified Data and AI", "Overall",
+     ["Shah, Himanshu (WP) <himanshu.shah@worldpay.com>"]),
+    ("Single-out", "Portal",
+     ["Jaemi Bremner <JB32645@globalpayments.com>",
+      "Amutha Velayutham <AV14206@globalpayments.com>"]),
+    ("Single-out", "Reporting",
+     ["helen.ryan@worldpay.com",
+      "Srini Turlapati <ST64774@globalpayments.com>"]),
+    ("Single-out", "Reporting",
+     ["Shaily Daftari <SD55321@globalpayments.com>",
+      "Amutha Velayutham <AV14206@globalpayments.com>"]),
+    ("Single-out", "Disputes",
+     ["helen.ryan@worldpay.com",
+      "Srini Turlapati <ST64774@globalpayments.com>"]),
+    ("Single-out", "Disputes",
+     ["Rosemary Kiley <rk67937@globalpayments.com>",
+      "Dowden, Travis (WP) <Travis.Dowden@worldpay.com>"]),
+    ("Single-out", "Disputes",
+     ["Singleton, Kimberly (WP) <Kimberly.Singleton@worldpay.com>",
+      "Neville DCosta <ND34475@globalpayments.com>"]),
+    ("Single-out", "PFaaS Products",
+     ["Blair, David (WP) <David.Blair@worldpay.com>",
+      "Curtis Landry <CL78324@globalpayments.com>",
+      "Dubreuil, Andre (WP) <andre.dubreuil@worldpay.com>"]),
+    ("Single-out", "PFaaS Products",
+     ["Soltan Nayabkhil <SN68225@globalpayments.com>"]),
+]
+
+
+def _parse_names(chunk):
+    """Normalize one raw tracker entry to a list of 'First Last' names."""
+    chunk = chunk.strip().rstrip(";").strip()
+    if not chunk:
+        return []
+    if "@" in chunk and "<" not in chunk:
+        # bare email -> derive name from the local part
+        words = [w for w in re.split(r"[._\d]+", chunk.split("@", 1)[0]) if w]
+        return [" ".join(w.capitalize() for w in words)]
+    name = re.sub(r"<[^>]*>", "", chunk).replace("(WP)", "")
+    name = name.strip().rstrip(";,").strip()
+    if not name:
+        return []
+    if "," in name:
+        parts = [p.strip() for p in name.split(",") if p.strip()]
+        if all(" " in p for p in parts):
+            return parts  # already a list of "First Last" names
+        if len(parts) == 2:
+            return [f"{parts[1]} {parts[0]}"]  # "Last, First" -> flip
+    return [name]
+
+
+def spoc_map():
+    """(capability, sub-capability) -> ordered, de-duplicated name list."""
+    out = {}
+    for cap, sub, cells in SPOC_ROWS:
+        names = out.setdefault((cap, sub), [])
+        for cell in cells:
+            for chunk in cell.split(";"):
+                for n in _parse_names(chunk):
+                    if n not in names:
+                        names.append(n)
+    return out
+
 
 NAVY = "1F4E79"
 HEADER_TINT = "DDEBF7"
@@ -324,8 +493,8 @@ def build_capability_sheet(wb, cap, subcaps):
 def build_summary(ws, all_sections):
     ws.sheet_properties.tabColor = TAB_COLORS["Summary"]
     ws.sheet_view.showGridLines = False
-    for col, w in {"A": 5, "B": 22, "C": 28, "D": 14, "E": 11, "F": 11,
-                   "G": 11, "H": 10}.items():
+    for col, w in {"A": 5, "B": 22, "C": 28, "D": 30, "E": 14, "F": 11,
+                   "G": 11, "H": 11, "I": 10}.items():
         ws.column_dimensions[col].width = w
 
     ws["A1"] = "Platform Assessment — Summary"
@@ -349,9 +518,10 @@ def build_summary(ws, all_sections):
         c.font = Font(size=9, color=NOTE_GRAY)
 
     hdr_row = 12
-    headers = ["#", "Capability", "Sub-capability", "Platforms listed",
-               "Tranche 1", "Tranche 2", "Tranche 3", "Open"]
-    hdr_fills = {"E": T1_FILL, "F": T2_FILL, "G": T3_FILL}
+    headers = ["#", "Capability", "Sub-capability", "SPOCs",
+               "Platforms listed", "Tranche 1", "Tranche 2", "Tranche 3",
+               "Open"]
+    hdr_fills = {"F": T1_FILL, "G": T2_FILL, "H": T3_FILL}
     for i, h in enumerate(headers):
         col = chr(ord("A") + i)
         c = ws[f"{col}{hdr_row}"]
@@ -367,6 +537,7 @@ def build_summary(ws, all_sections):
         c.border = TABLE_BORDER
     ws.row_dimensions[hdr_row].height = 24
 
+    spocs = spoc_map()
     r = hdr_row + 1
     idx = 1
     for cap, subcaps in CAPABILITIES:
@@ -375,22 +546,32 @@ def build_summary(ws, all_sections):
             s, r1, r2 = all_sections[cap][subcap]
             ws[f"A{r}"] = idx
             ws[f"C{r}"] = subcap
-            ws[f"D{r}"] = f"=COUNTA('{cap}'!$B${r1}:$B${r2})"
-            for col, lbl in zip("EFG", ["Tranche 1", "Tranche 2", "Tranche 3"]):
+            names = spocs.get((cap, subcap), [])
+            d = ws[f"D{r}"]
+            d.value = "\n".join(f"• {n}" for n in names)
+            d.font = Font(size=9)
+            d.alignment = Alignment(vertical="center", wrap_text=True,
+                                    indent=1)
+            ws[f"E{r}"] = f"=COUNTA('{cap}'!$B${r1}:$B${r2})"
+            for col, lbl in zip("FGH", ["Tranche 1", "Tranche 2", "Tranche 3"]):
                 ws[f"{col}{r}"] = (
                     f"=COUNTIF('{cap}'!$G${r1}:$G${r2},\"{lbl}\")")
-            ws[f"H{r}"] = f'=HYPERLINK("#\'{cap}\'!A{s}","Open →")'
-            ws[f"H{r}"].font = Font(size=10, color=LINK, underline="single")
+            ws[f"I{r}"] = f'=HYPERLINK("#\'{cap}\'!A{s}","Open →")'
+            ws[f"I{r}"].font = Font(size=10, color=LINK, underline="single")
             ws[f"A{r}"].font = Font(size=9, color=NOTE_GRAY)
-            ws[f"A{r}"].alignment = Alignment(horizontal="center")
+            ws[f"A{r}"].alignment = Alignment(horizontal="center",
+                                              vertical="center")
             ws[f"C{r}"].font = Font(size=10)
-            for col in "DEFG":
-                ws[f"{col}{r}"].alignment = Alignment(horizontal="center")
+            ws[f"C{r}"].alignment = Alignment(vertical="center")
+            for col in "EFGH":
+                ws[f"{col}{r}"].alignment = Alignment(horizontal="center",
+                                                      vertical="center")
                 ws[f"{col}{r}"].font = Font(size=10)
-            ws[f"H{r}"].alignment = Alignment(horizontal="center")
-            for col in "ABCDEFGH":
+            ws[f"I{r}"].alignment = Alignment(horizontal="center",
+                                              vertical="center")
+            for col in "ABCDEFGHI":
                 ws[f"{col}{r}"].border = TABLE_BORDER
-            ws.row_dimensions[r].height = 18
+            ws.row_dimensions[r].height = max(18, 6 + 13 * len(names))
             r += 1
             idx += 1
         b = ws[f"B{group_start}"]
@@ -404,15 +585,15 @@ def build_summary(ws, all_sections):
             ws.merge_cells(f"B{group_start}:B{r - 1}")
 
     last_data = r - 1
-    ws[f"C{r}"] = "Total"
-    ws[f"C{r}"].font = Font(bold=True, size=10, color=NAVY)
-    ws[f"C{r}"].alignment = Alignment(horizontal="right", indent=1)
-    for col in "DEFG":
+    ws[f"D{r}"] = "Total"
+    ws[f"D{r}"].font = Font(bold=True, size=10, color=NAVY)
+    ws[f"D{r}"].alignment = Alignment(horizontal="right", indent=1)
+    for col in "EFGH":
         c = ws[f"{col}{r}"]
         c.value = f"=SUM({col}{hdr_row + 1}:{col}{last_data})"
         c.font = Font(bold=True, size=10, color=NAVY)
         c.alignment = Alignment(horizontal="center")
-    for col in "ABCDEFGH":
+    for col in "ABCDEFGHI":
         ws[f"{col}{r}"].border = Border(top=Side(style="medium", color=NAVY))
 
     ws.freeze_panes = f"A{hdr_row + 1}"
