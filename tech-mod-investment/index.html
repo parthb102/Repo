@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Tech Modernization Investment — Triangulation Model</title>
+<style>
+:root{
+  --navy:#051C2C; --navy2:#0B2A3D; --ink:#0d1b24; --muted:#5a6b76; --line:#e3e8ec;
+  --bg:#f4f6f8; --card:#ffffff; --blue:#2251FF; --blue2:#3c78ff; --cyan:#00A9F4;
+  --teal:#0fb5a4; --amber:#f0a202; --green:#1aa251; --red:#d64545; --soft:#eef2f6;
+  --shadow:0 1px 2px rgba(5,28,44,.06),0 6px 20px rgba(5,28,44,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.45;-webkit-font-smoothing:antialiased;font-size:14px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 22px 90px}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.01em}
+a{color:var(--blue)}
+.small{font-size:12px;color:var(--muted)}
+.mono{font-variant-numeric:tabular-nums}
+
+/* Header */
+header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:26px 0 22px;margin-bottom:22px;
+  border-bottom:3px solid var(--cyan)}
+header .wrap{padding-bottom:0}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+header h1{font-size:25px;margin:6px 0 4px;color:#fff}
+header p{margin:0;color:#b9c7d1;font-size:13px;max-width:880px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:20px;
+  padding:5px 12px;font-size:12px;color:#dfe8ee}
+.chip b{color:#fff}
+
+/* Headline */
+.headline{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;margin-bottom:18px}
+@media(max-width:900px){.headline{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.pad{padding:18px 20px}
+.bignum{font-size:46px;font-weight:720;letter-spacing:-.02em;line-height:1}
+.bignum.net{color:var(--blue)}
+.range{font-size:13px;color:var(--muted);margin-top:8px}
+.label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.divider{height:1px;background:var(--line);margin:14px 0}
+.kv{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:13px}
+.kv b{font-weight:650}
+.bridge .kv span:first-child{color:var(--muted)}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 8px;border-radius:5px;vertical-align:middle}
+.tag.td{background:#e7eeff;color:#2a46c8}
+.tag.bu{background:#e3f6f2;color:#0a8f80}
+
+/* Section titles */
+.sec-title{display:flex;align-items:center;gap:10px;margin:26px 2px 12px}
+.sec-title h2{font-size:17px}
+.sec-title .num{width:24px;height:24px;border-radius:7px;background:var(--navy);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-size:12px;font-weight:700}
+
+/* Grid of approach cards */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.approach .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:16px 20px 0}
+.approach .head h3{font-size:15px}
+.approach .out{font-size:30px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.approach .rationale{padding:8px 20px 0;color:var(--muted);font-size:12.5px}
+.controls{padding:14px 20px 4px}
+.ctrl{margin:11px 0}
+.ctrl .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+.ctrl .nm{font-size:12.5px;font-weight:600}
+.ctrl .vv{font-size:12.5px;font-weight:700;color:var(--navy)}
+input[type=range]{width:100%;height:4px;-webkit-appearance:none;appearance:none;background:var(--line);
+  border-radius:3px;outline:none;margin:6px 0 2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+  background:var(--blue);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--blue);
+  cursor:pointer;border:2px solid #fff}
+input[type=number]{width:78px;text-align:right;font-family:inherit;font-size:12.5px;font-weight:600;
+  border:1px solid var(--line);border-radius:6px;padding:4px 6px;color:var(--navy);
+  font-variant-numeric:tabular-nums}
+input[type=number]:focus{outline:none;border-color:var(--blue)}
+.narr{margin:6px 20px 18px;background:var(--soft);border-left:3px solid var(--cyan);border-radius:0 8px 8px 0;
+  padding:11px 14px;font-size:12.5px;color:#33454f}
+.narr b{color:var(--navy)}
+
+/* 6Rs table */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{padding:6px 6px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+td input[type=number]{width:60px;padding:3px 5px}
+.miniinput{width:58px!important}
+tfoot td{font-weight:700;border-top:2px solid var(--navy);border-bottom:none;color:var(--navy)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+/* charts */
+svg{display:block;width:100%;height:auto;overflow:visible}
+.axislab{font-size:10.5px;fill:var(--muted)}
+.barlab{font-size:11px;fill:var(--ink);font-weight:600}
+.barval{font-size:11px;font-weight:700}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:2px 0 16px}
+.btn{font-family:inherit;font-size:12.5px;font-weight:600;border:1px solid var(--line);background:#fff;
+  color:var(--ink);border-radius:8px;padding:7px 13px;cursor:pointer;transition:.12s}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:#0a3047;color:#fff}
+.btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:none;border-right:1px solid var(--line);background:#fff;padding:7px 12px;font-size:12.5px;
+  font-weight:600;cursor:pointer;color:var(--muted)}
+.seg button:last-child{border-right:none}
+.seg button.active{background:var(--navy);color:#fff}
+.spacer{flex:1}
+.note{font-size:11px;color:var(--muted)}
+.warn{color:var(--amber);font-weight:600}
+.ok{color:var(--green);font-weight:600}
+
+/* phasing */
+.phaserow{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+@media(max-width:900px){.phaserow{grid-template-columns:1fr}}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:4px 0 2px;font-size:12px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.yeartable td,.yeartable th{text-align:right}
+.yeartable td:first-child,.yeartable th:first-child{text-align:left}
+
+footer{margin-top:30px;color:var(--muted);font-size:11.5px;text-align:center}
+details{margin-top:6px}
+summary{cursor:pointer;font-weight:600;color:var(--navy);font-size:13px}
+.srclist{font-size:12px;color:#33454f}
+.srclist li{margin:5px 0}
+.printhide{}
+@media print{.printhide{display:none}body{background:#fff}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Technology Modernization &amp; Platform Consolidation</div>
+    <h1>One-Time Investment Ask — Triangulation Model</h1>
+    <p>Four independent lenses (two top-down, two bottom-up) sized against four different anchors — savings, spend, applications, and workforce — converging on a defensible <b>gross</b> investment range, with a gross→net bridge and a 5-year funding profile. Every factor is editable.</p>
+    <div class="chips" id="chips"></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- toolbar -->
+  <div class="toolbar printhide">
+    <span class="label" style="margin-right:4px">Scenario</span>
+    <div class="seg" id="presets">
+      <button data-p="lean">Lean</button>
+      <button data-p="base" class="active">Base</button>
+      <button data-p="ambitious">Ambitious</button>
+    </div>
+    <span class="spacer"></span>
+    <button class="btn" id="resetBtn">Reset to Base</button>
+    <button class="btn primary" onclick="window.print()">Export / Print</button>
+  </div>
+
+  <!-- HEADLINE -->
+  <div class="headline">
+    <div class="card pad">
+      <div class="label">Triangulated gross investment (5-year)</div>
+      <div class="bignum mono" id="hl-gross">$—</div>
+      <div class="range" id="hl-range"></div>
+      <div class="divider"></div>
+      <div id="tri-chart"></div>
+      <div class="small" style="margin-top:6px">Bars show each approach's gross estimate. Shaded band = triangulation range; line = mean of included approaches. Toggle an approach in/out of the triangulation in its card.</div>
+    </div>
+    <div class="card pad bridge">
+      <div class="label">Gross → Net bridge</div>
+      <div class="kv"><span>Gross program cost</span><b class="mono" id="br-gross">$—</b></div>
+      <div class="kv"><span>(–) Capacity released from non-target sunsets</span><b class="mono" id="br-cap" style="color:var(--green)">$—</b></div>
+      <div class="kv"><span>(–) Run-rate savings realized in-flight</span><b class="mono" id="br-inflight" style="color:var(--green)">$—</b></div>
+      <div class="divider"></div>
+      <div class="kv"><span style="font-weight:650;color:var(--ink)">Net new funding ask</span><b class="mono bignum net" style="font-size:28px" id="br-net">$—</b></div>
+      <div class="ctrl" style="margin-top:14px">
+        <div class="top"><span class="nm">Self-funding (% of gross offset before net ask)</span><span class="vv"><span id="sf-val"></span>%</span></div>
+        <input type="range" data-key="selffund_pct" min="0" max="50" step="1">
+      </div>
+      <div class="small">Self-funding splits ~60/40 between redeployed capacity (from sunsetting non-target apps) and run-rate savings banked during the build. The net ask is what you take to the investment committee.</div>
+    </div>
+  </div>
+
+  <!-- APPROACHES -->
+  <div class="sec-title"><div class="num">1</div><h2>Triangulation approaches</h2></div>
+  <div class="grid2">
+
+    <!-- TD1 -->
+    <div class="card approach" id="card-td1">
+      <div class="head">
+        <div>
+          <span class="tag td">Top-down · A</span>
+          <h3 style="margin-top:6px">Investment-to-savings multiple</h3>
+        </div>
+        <div style="text-align:right">
+          <div class="out mono" id="out-td1">$—</div>
+          <label class="small" style="cursor:pointer"><input type="checkbox" data-inc="td1" checked> include</label>
+        </div>
+      </div>
+      <div class="rationale">Programs are underwritten against the run-rate savings they unlock. Large IT modernization typically requires a gross investment of ~2–3× the annual run-rate (i.e. 2–3yr simple payback before phasing).</div>
+      <div class="controls">
+        <div class="ctrl">
+          <div class="top"><span class="nm">Annual run-rate savings ($M)</span><span class="vv mono" id="v-savings"></span></div>
+          <input type="range" data-key="savings" min="100" max="400" step="10">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="nm">Gross investment multiple (×)</span><span class="vv mono" id="v-td1mult"></span></div>
+          <input type="range" data-key="td1_multiple" min="1.2" max="4" step="0.1">
+        </div>
+      </div>
+      <div class="narr" id="narr-td1"></div>
+    </div>
+
+    <!-- TD2 -->
+    <div class="card approach" id="card-td2">
+      <div class="head">
+        <div>
+          <span class="tag td">Top-down · B</span>
+          <h3 style="margin-top:6px">Share of IT budget reinvested</h3>
+        </div>
+        <div style="text-align:right">
+          <div class="out mono" id="out-td2">$—</div>
+          <label class="small" style="cursor:pointer"><input type="checkbox" data-inc="td2" checked> include</label>
+        </div>
+      </div>
+      <div class="rationale">During active transformation, leading firms ring-fence an elevated slice of the IT budget for modernization — typically ~10–18% of annual spend on top of run-the-bank — for the duration of the program.</div>
+      <div class="controls">
+        <div class="ctrl">
+          <div class="top"><span class="nm">Annual technology spend ($M)</span><span class="vv mono" id="v-techspend"></span></div>
+          <input type="range" data-key="techSpend" min="600" max="1400" step="25">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="nm">Modernization share of spend (%/yr)</span><span class="vv mono" id="v-td2pct"></span></div>
+          <input type="range" data-key="td2_pct" min="6" max="22" step="0.5">
+        </div>
+        <div class="ctrl">
+          <div class="top"><span class="nm">Program horizon (years)</span><span class="vv mono" id="v-horizon2"></span></div>
+          <input type="range" data-key="horizon" min="3" max="7" step="1">
+        </div>
+      </div>
+      <div class="narr" id="narr-td2"></div>
+    </div>
+
+    <!-- BU1 -->
+    <div class="card approach" id="card-bu1" style="grid-column:1 / -1">
+      <div class="head">
+        <div>
+          <span class="tag bu">Bottom-up · A</span>
+          <h3 style="margin-top:6px">6Rs per-application disposition costing</h3>
+        </div>
+        <div style="text-align:right">
+          <div class="out mono" id="out-bu1">$—</div>
+          <label class="small" style="cursor:pointer"><input type="checkbox" data-inc="bu1" checked> include</label>
+        </div>
+      </div>
+      <div class="rationale">Segment the ~700-app estate by modernization disposition (6Rs) and apply a blended fully-loaded unit cost per app (unit cost bakes in the small/medium/large size mix). Rewrites and SaaS repurchasing dominate the cost.</div>
+      <div class="controls" style="padding-bottom:0">
+        <table id="tbl-6rs">
+          <thead>
+            <tr><th>Disposition</th><th>Mix %</th><th>Apps</th><th>$M / app</th><th>Subtotal $M</th></tr>
+          </thead>
+          <tbody><!-- rows injected --></tbody>
+          <tfoot>
+            <tr><td>Application-level total</td><td id="f-mix"></td><td id="f-apps"></td><td></td><td id="f-sub" class="mono"></td></tr>
+          </tfoot>
+        </table>
+        <div class="grid2" style="margin-top:6px">
+          <div class="ctrl">
+            <div class="top"><span class="nm">Program overhead — EA, integration, data, security, PMO, cloud foundation (%)</span><span class="vv mono" id="v-bu1oh"></span></div>
+            <input type="range" data-key="bu1_overhead" min="5" max="35" step="1">
+          </div>
+          <div class="ctrl">
+            <div class="top"><span class="nm">Global complexity multiplier (×)</span><span class="vv mono" id="v-bu1cx"></span></div>
+            <input type="range" data-key="bu1_complexity" min="0.7" max="1.5" step="0.05">
+          </div>
+        </div>
+        <div class="note" id="mix-note" style="margin-bottom:8px"></div>
+      </div>
+      <div class="narr" id="narr-bu1"></div>
+    </div>
+
+    <!-- BU2 -->
+    <div class="card approach" id="card-bu2" style="grid-column:1 / -1">
+      <div class="head">
+        <div>
+          <span class="tag bu">Bottom-up · B</span>
+          <h3 style="margin-top:6px">Delivery capacity &amp; effort (with GenAI uplift)</h3>
+        </div>
+        <div style="text-align:right">
+          <div class="out mono" id="out-bu2">$—</div>
+          <label class="small" style="cursor:pointer"><input type="checkbox" data-inc="bu2" checked> include</label>
+        </div>
+      </div>
+      <div class="rationale">Build from the engineering effort required: blended delivery capacity (internal + offshore + SI/vendor) dedicated to modernization, sustained across the horizon, plus non-labor (cloud, licenses, tooling, AI tokens), net of a GenAI productivity benefit on eligible work.</div>
+      <div class="controls">
+        <div class="grid2">
+          <div class="ctrl">
+            <div class="top"><span class="nm">Avg blended FTE-equivalents on modernization</span><span class="vv mono" id="v-bu2fte"></span></div>
+            <input type="range" data-key="bu2_fte" min="400" max="2500" step="50">
+          </div>
+          <div class="ctrl">
+            <div class="top"><span class="nm">Fully-loaded cost / FTE-year ($K)</span><span class="vv mono" id="v-bu2rate"></span></div>
+            <input type="range" data-key="bu2_rate" min="80" max="220" step="5">
+          </div>
+          <div class="ctrl">
+            <div class="top"><span class="nm">Non-labor uplift — cloud, licenses, tooling, tokens (%)</span><span class="vv mono" id="v-bu2nl"></span></div>
+            <input type="range" data-key="bu2_nonlabor" min="5" max="40" step="1">
+          </div>
+          <div class="ctrl">
+            <div class="top"><span class="nm">GenAI productivity benefit on eligible work (%)</span><span class="vv mono" id="v-bu2ai"></span></div>
+            <input type="range" data-key="bu2_ai" min="0" max="40" step="1">
+          </div>
+        </div>
+        <div class="small">Capacity sustained over <b id="v-horizon2b"></b> years (linked to horizon). At <b id="v-pctworkforce"></b> of the ~23K tech workforce-equivalent.</div>
+      </div>
+      <div class="narr" id="narr-bu2"></div>
+    </div>
+
+  </div>
+
+  <!-- PHASING -->
+  <div class="sec-title"><div class="num">2</div><h2>5-year funding profile</h2></div>
+  <div class="card pad">
+    <div class="toolbar printhide" style="margin-bottom:14px">
+      <span class="label" style="margin-right:4px">Distribution logic</span>
+      <div class="seg" id="phaseseg">
+        <button data-ph="sigmoid" class="active">S-curve (ramp &amp; taper)</button>
+        <button data-ph="frontloaded">Front-loaded</button>
+        <button data-ph="backloaded">Back-loaded</button>
+        <button data-ph="even">Even</button>
+        <button data-ph="custom">Custom</button>
+      </div>
+    </div>
+    <div class="phaserow">
+      <div>
+        <div class="legend">
+          <span><span class="dot" style="background:#cdd8e0"></span>Gross spend / yr</span>
+          <span><span class="dot" style="background:var(--blue)"></span>Net cash ask / yr</span>
+          <span><span class="dot" style="background:var(--green)"></span>Self-funded / yr</span>
+          <span><span class="dot" style="background:var(--navy)"></span>Cumulative net</span>
+        </div>
+        <div id="phase-chart"></div>
+      </div>
+      <div>
+        <table class="yeartable">
+          <thead><tr><th>Year</th><th>Gross %</th><th>Gross $M</th><th>Self-fund $M</th><th>Net cash $M</th></tr></thead>
+          <tbody id="phase-tbody"></tbody>
+          <tfoot><tr><td>Total</td><td id="ph-pct"></td><td id="ph-gross" class="mono"></td><td id="ph-sf" class="mono"></td><td id="ph-net" class="mono"></td></tr></tfoot>
+        </table>
+        <div class="note" id="phase-note" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <div class="narr" id="narr-phase" style="margin:14px 0 0"></div>
+  </div>
+
+  <!-- DEFENSIBILITY -->
+  <div class="sec-title"><div class="num">3</div><h2>Why this is defensible — assumptions in plain English</h2></div>
+  <div class="card pad">
+    <div id="defensibility"></div>
+    <details>
+      <summary>Benchmark basis &amp; framework notes</summary>
+      <ul class="srclist">
+        <li><b>6Rs disposition framework</b> (retire, retain, rehost, replatform, repurchase, refactor/rewrite) is the standard Gartner/cloud-migration taxonomy for portfolio modernization — the same approach described in the QB/EPA thread.</li>
+        <li><b>Per-app unit costs</b> reflect typical fully-loaded ranges: retire/decommission $0.1–0.2M; rehost (lift-and-shift) $0.2–0.4M; replatform $0.5–1.0M; repurchase-to-SaaS $1–2M (license + implementation + data + change); refactor/rewrite $2–5M blended across size. Tune per discovery.</li>
+        <li><b>Investment-to-savings multiples</b> of ~2–3× annual run-rate are consistent with the 2–3 year simple paybacks underwritten on large efficiency-led IT transformations.</li>
+        <li><b>Reinvestment share</b> of ~10–18% of annual IT budget into modernization is an elevated "change-the-bank" allocation sustained only during active transformation.</li>
+        <li><b>GenAI uplift</b> on eligible modernization work (code understanding, test generation, refactoring, migration) — model conservatively; benefit concentrates on rewrite/replatform, not the full estate.</li>
+        <li><b>Gross vs net:</b> gross is the full program cost; net deducts capacity freed by sunsetting non-target apps (redeployed to target-state build) and run-rate savings banked in-flight. The investment committee ask is the net.</li>
+      </ul>
+      <p class="small">Ranges are typical industry orders of magnitude for structuring the ask, not a substitute for portfolio discovery. Replace unit costs and mix with client-specific data from the application-mapping exercise (dependencies, integrations, LoC/complexity sizing) as it lands.</p>
+    </details>
+  </div>
+
+  <footer>
+    Interactive triangulation model · all figures illustrative and fully editable · built for structuring the modernization investment ask.
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* ---------------- Model ---------------- */
+const BASE = {
+  // anchors (company profile)
+  revenue: 10000, techSpend: 1000, apps: 700, savings: 250,
+  fteTech: 13000, contractors: 10000, horizon: 5,
+  // TD1
+  td1_multiple: 2.5,
+  // TD2
+  td2_pct: 13,
+  // BU1 6Rs: mix % of apps, unit $M/app
+  bu1: {
+    retire:    {nm:"Retire (decommission)",        mix:22, unit:0.12, c:"#9aa7b0"},
+    retain:    {nm:"Retain (low / no touch)",       mix:18, unit:0.04, c:"#c2ccd4"},
+    rehost:    {nm:"Rehost (lift & shift)",         mix:12, unit:0.25, c:"#00A9F4"},
+    replatform:{nm:"Replatform",                    mix:18, unit:0.70, c:"#0fb5a4"},
+    repurchase:{nm:"Repurchase (SaaS)",             mix:15, unit:1.30, c:"#f0a202"},
+    rewrite:   {nm:"Refactor / rewrite",            mix:15, unit:3.20, c:"#2251FF"},
+  },
+  bu1_overhead: 18, bu1_complexity: 1.0,
+  // BU2
+  bu2_fte: 1100, bu2_rate: 130, bu2_nonlabor: 18, bu2_ai: 15,
+  // bridge
+  selffund_pct: 26,
+  // phasing
+  phase: "sigmoid",
+  custom: [12,22,32,22,12],
+  include: {td1:true, td2:true, bu1:true, bu2:true},
+};
+
+const PRESETS = {
+  lean:      {td1_multiple:2.0, td2_pct:10, bu1_overhead:12, bu1_complexity:0.85, bu2_fte:850,  bu2_rate:115, bu2_nonlabor:12, bu2_ai:25, selffund_pct:32,
+              mix:{retire:26,retain:20,rehost:14,replatform:16,repurchase:13,rewrite:11}},
+  base:      {td1_multiple:2.5, td2_pct:13, bu1_overhead:18, bu1_complexity:1.0,  bu2_fte:1100, bu2_rate:130, bu2_nonlabor:18, bu2_ai:15, selffund_pct:26,
+              mix:{retire:22,retain:18,rehost:12,replatform:18,repurchase:15,rewrite:15}},
+  ambitious: {td1_multiple:3.1, td2_pct:17, bu1_overhead:24, bu1_complexity:1.2,  bu2_fte:1550, bu2_rate:150, bu2_nonlabor:24, bu2_ai:8,  selffund_pct:20,
+              mix:{retire:16,retain:12,rehost:10,replatform:20,repurchase:18,rewrite:24}},
+};
+
+const PHASES = {
+  sigmoid:     [12,22,32,22,12],
+  frontloaded: [26,25,21,16,12],
+  backloaded:  [12,16,21,25,26],
+  even:        [20,20,20,20,20],
+};
+const SF_PROFILE = [5,12,20,28,35]; // self-funding realization by year (savings ramp late)
+
+function clone(o){return JSON.parse(JSON.stringify(o));}
+let A = clone(BASE);
+
+/* ---------------- Helpers ---------------- */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+function f$(m){ // $M -> string
+  if(m===null||isNaN(m)) return "$—";
+  const a=Math.abs(m);
+  if(a>=1000) return "$"+(m/1000).toFixed(2).replace(/\.?0+$/,"")+"B";
+  return "$"+Math.round(m).toLocaleString()+"M";
+}
+function f1(x){return (Math.round(x*10)/10).toString();}
+function get(path){return path.split(".").reduce((o,k)=>o[k],A);}
+function set(path,v){const ks=path.split(".");const last=ks.pop();let o=A;ks.forEach(k=>o=o[k]);o[last]=v;}
+
+/* ---------------- Calculations ---------------- */
+function calcTD1(){ return A.savings * A.td1_multiple; }
+function calcTD2(){ return A.techSpend * A.horizon * (A.td2_pct/100); }
+function bu1Rows(){
+  const rows=[];
+  for(const k in A.bu1){
+    const d=A.bu1[k];
+    const apps=A.apps*(d.mix/100);
+    const sub=apps*d.unit*A.bu1_complexity;
+    rows.push({k,nm:d.nm,c:d.c,mix:d.mix,apps,unit:d.unit,sub});
+  }
+  return rows;
+}
+function calcBU1(){
+  const sub=bu1Rows().reduce((s,r)=>s+r.sub,0);
+  return sub*(1+A.bu1_overhead/100);
+}
+function bu1Subtotal(){ return bu1Rows().reduce((s,r)=>s+r.sub,0); }
+function calcBU2(){
+  const labor=A.bu2_fte*A.horizon*(A.bu2_rate/1000); // $M
+  return labor*(1+A.bu2_nonlabor/100)*(1-A.bu2_ai/100);
+}
+function approaches(){
+  return [
+    {id:"td1",label:"Inv-to-savings (×)",val:calcTD1(),inc:A.include.td1,cls:"td"},
+    {id:"td2",label:"% of IT budget",   val:calcTD2(),inc:A.include.td2,cls:"td"},
+    {id:"bu1",label:"6Rs per-app",      val:calcBU1(),inc:A.include.bu1,cls:"bu"},
+    {id:"bu2",label:"Capacity & effort",val:calcBU2(),inc:A.include.bu2,cls:"bu"},
+  ];
+}
+function triangulate(){
+  const inc=approaches().filter(a=>a.inc);
+  if(!inc.length) return {mean:0,min:0,max:0,n:0};
+  const vals=inc.map(a=>a.val);
+  return {mean:vals.reduce((s,v)=>s+v,0)/vals.length, min:Math.min(...vals), max:Math.max(...vals), n:vals.length};
+}
+function phaseArr(){ return A.phase==="custom"?A.custom:PHASES[A.phase]; }
+
+/* ---------------- Rendering ---------------- */
+function renderChips(){
+  const c=[
+    ["Revenue","$10B"],["Tech spend","~$1B (10% of rev)"],["Applications","~700"],
+    ["Savings target","~$250M run-rate (2.5pp)"],["Tech org","~13K FTE + ~10K contractors"],["Horizon",A.horizon+" yrs"]
+  ];
+  $("#chips").innerHTML=c.map(x=>`<span class="chip">${x[0]}: <b>${x[1]}</b></span>`).join("");
+}
+
+function renderHeadline(){
+  const t=triangulate();
+  $("#hl-gross").textContent=f$(t.mean);
+  $("#hl-range").innerHTML=`Range across ${t.n} included approaches: <b class="mono">${f$(t.min)} – ${f$(t.max)}</b>`;
+  // bridge
+  const gross=t.mean;
+  const sf=gross*(A.selffund_pct/100);
+  const cap=sf*0.6, inflight=sf*0.4;
+  const net=gross-sf;
+  $("#br-gross").textContent=f$(gross);
+  $("#br-cap").textContent="– "+f$(cap);
+  $("#br-inflight").textContent="– "+f$(inflight);
+  $("#br-net").textContent=f$(net);
+  $("#sf-val").textContent=A.selffund_pct;
+}
+
+function triChart(){
+  const t=triangulate();
+  const aps=approaches();
+  const maxV=Math.max(...aps.map(a=>a.val),t.max)*1.15||1;
+  const W=560,H=190,padL=128,padR=58,padT=10,padB=24;
+  const innerW=W-padL-padR, innerH=H-padT-padB;
+  const x=v=>padL+(v/maxV)*innerW;
+  const n=aps.length, bandH=innerH/n, bh=Math.min(26,bandH*0.55);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Triangulation chart">`;
+  // range band
+  if(t.n){
+    s+=`<rect x="${x(t.min)}" y="${padT}" width="${x(t.max)-x(t.min)}" height="${innerH}" fill="#2251FF" opacity="0.07"/>`;
+    s+=`<line x1="${x(t.mean)}" y1="${padT-2}" x2="${x(t.mean)}" y2="${padT+innerH+2}" stroke="#051C2C" stroke-width="2" stroke-dasharray="4 3"/>`;
+    s+=`<text x="${x(t.mean)}" y="${padT-2}" text-anchor="middle" class="barval" fill="#051C2C">mean ${f$(t.mean)}</text>`;
+  }
+  // axis ticks
+  for(let i=0;i<=4;i++){
+    const v=maxV*i/4;
+    s+=`<line x1="${x(v)}" y1="${padT}" x2="${x(v)}" y2="${padT+innerH}" stroke="#eef2f6" stroke-width="1"/>`;
+    s+=`<text x="${x(v)}" y="${H-8}" text-anchor="middle" class="axislab">${f$(v)}</text>`;
+  }
+  aps.forEach((a,i)=>{
+    const cy=padT+bandH*i+bandH/2;
+    const col=a.cls==="td"?"#2a46c8":"#0a8f80";
+    const op=a.inc?1:0.28;
+    s+=`<text x="${padL-10}" y="${cy+4}" text-anchor="end" class="barlab" opacity="${a.inc?1:0.5}">${a.label}</text>`;
+    s+=`<rect x="${padL}" y="${cy-bh/2}" width="${Math.max(0,x(a.val)-padL)}" height="${bh}" rx="3" fill="${col}" opacity="${op}"/>`;
+    s+=`<text x="${x(a.val)+6}" y="${cy+4}" class="barval" fill="${a.inc?'#0d1b24':'#9aa7b0'}">${f$(a.val)}</text>`;
+  });
+  s+=`</svg>`;
+  $("#tri-chart").innerHTML=s;
+}
+
+function renderControls(){
+  // sync all inputs from A
+  $$("input[data-key]").forEach(inp=>{
+    const v=get(inp.dataset.key);
+    if(document.activeElement!==inp) inp.value=v;
+  });
+  $("#v-savings").textContent="$"+A.savings+"M";
+  $("#v-td1mult").textContent=f1(A.td1_multiple)+"×";
+  $("#v-techspend").textContent="$"+A.techSpend+"M";
+  $("#v-td2pct").textContent=f1(A.td2_pct)+"%";
+  $("#v-horizon2").textContent=A.horizon;
+  $("#v-horizon2b").textContent=A.horizon;
+  $("#v-bu1oh").textContent=A.bu1_overhead+"%";
+  $("#v-bu1cx").textContent=f1(A.bu1_complexity)+"×";
+  $("#v-bu2fte").textContent=A.bu2_fte.toLocaleString();
+  $("#v-bu2rate").textContent="$"+A.bu2_rate+"K";
+  $("#v-bu2nl").textContent=A.bu2_nonlabor+"%";
+  $("#v-bu2ai").textContent=A.bu2_ai+"%";
+  const pct=(A.bu2_fte/(A.fteTech+A.contractors))*100;
+  $("#v-pctworkforce").textContent="~"+f1(pct)+"%";
+  // outputs
+  $("#out-td1").textContent=f$(calcTD1());
+  $("#out-td2").textContent=f$(calcTD2());
+  $("#out-bu1").textContent=f$(calcBU1());
+  $("#out-bu2").textContent=f$(calcBU2());
+  // include checkboxes
+  $$("input[data-inc]").forEach(cb=>cb.checked=A.include[cb.dataset.inc]);
+}
+
+function render6Rs(){
+  const rows=bu1Rows();
+  const tb=$("#tbl-6rs tbody");
+  tb.innerHTML=rows.map(r=>`
+    <tr>
+      <td><span class="dot" style="background:${r.c}"></span>${r.nm}</td>
+      <td><input type="number" class="miniinput" data-mix="${r.k}" value="${r.mix}" min="0" max="100" step="1"></td>
+      <td class="mono">${Math.round(r.apps)}</td>
+      <td><input type="number" class="miniinput" data-unit="${r.k}" value="${r.unit}" min="0" max="20" step="0.05"></td>
+      <td class="mono">${f$(r.sub)}</td>
+    </tr>`).join("");
+  // wire the mini-inputs
+  tb.querySelectorAll("input[data-mix]").forEach(i=>i.oninput=e=>{A.bu1[e.target.dataset.mix].mix=clampNum(e.target.value,0,100);renderAll(false);});
+  tb.querySelectorAll("input[data-unit]").forEach(i=>i.oninput=e=>{A.bu1[e.target.dataset.unit].unit=clampNum(e.target.value,0,50);renderAll(false);});
+  const mix=rows.reduce((s,r)=>s+r.mix,0);
+  const apps=rows.reduce((s,r)=>s+r.apps,0);
+  $("#f-mix").textContent=mix+"%";
+  $("#f-apps").textContent=Math.round(apps);
+  $("#f-sub").textContent=f$(bu1Subtotal());
+  const note=$("#mix-note");
+  if(Math.round(mix)!==100){
+    note.innerHTML=`<span class="warn">⚠ Disposition mix sums to ${mix}% (allocates ${Math.round(apps)} of ${A.apps} apps).</span> Calculation uses the mix as entered.`;
+  }else{
+    note.innerHTML=`<span class="ok">✓ Mix sums to 100% — all ${A.apps} applications allocated.</span>`;
+  }
+}
+function clampNum(v,lo,hi){v=parseFloat(v);if(isNaN(v))v=lo;return Math.min(hi,Math.max(lo,v));}
+
+/* ---------- Phasing ---------- */
+function phaseData(){
+  const t=triangulate();
+  const gross=t.mean;
+  const sfTot=gross*(A.selffund_pct/100);
+  const ph=phaseArr();
+  const phSum=ph.reduce((a,b)=>a+b,0)||1;
+  const out=[];
+  let cum=0;
+  for(let y=0;y<5;y++){
+    const gpct=ph[y]/phSum;
+    const g=gross*gpct;
+    const sf=sfTot*(SF_PROFILE[y]/100);
+    const net=g-sf;
+    cum+=net;
+    out.push({year:y+1,gpct:ph[y],g,sf,net,cum});
+  }
+  return {rows:out,gross,sfTot,net:gross-sfTot};
+}
+function phaseChart(){
+  const d=phaseData();
+  const W=520,H=240,padL=44,padR=14,padT=14,padB=28;
+  const innerW=W-padL-padR,innerH=H-padT-padB;
+  const maxV=Math.max(...d.rows.map(r=>r.g),...d.rows.map(r=>r.cum))*1.12||1;
+  const y=v=>padT+innerH-(v/maxV)*innerH;
+  const bw=innerW/5, bar=bw*0.5;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Phasing chart">`;
+  for(let i=0;i<=4;i++){
+    const v=maxV*i/4;
+    s+=`<line x1="${padL}" y1="${y(v)}" x2="${W-padR}" y2="${y(v)}" stroke="#eef2f6"/>`;
+    s+=`<text x="${padL-6}" y="${y(v)+3}" text-anchor="end" class="axislab">${f$(v)}</text>`;
+  }
+  // bars
+  d.rows.forEach((r,i)=>{
+    const cx=padL+bw*i+bw/2;
+    const bx=cx-bar/2;
+    // gross (light) full
+    s+=`<rect x="${bx}" y="${y(r.g)}" width="${bar}" height="${y(0)-y(r.g)}" rx="3" fill="#cdd8e0"/>`;
+    // net (blue) bottom portion; self-fund (green) sits on top to gross
+    s+=`<rect x="${bx}" y="${y(r.net)}" width="${bar}" height="${y(0)-y(r.net)}" rx="3" fill="#2251FF"/>`;
+    s+=`<rect x="${bx}" y="${y(r.g)}" width="${bar}" height="${y(r.net)-y(r.g)}" fill="#1aa251" opacity="0.85"/>`;
+    s+=`<text x="${cx}" y="${y(r.g)-5}" text-anchor="middle" class="barval" fill="#0d1b24">${f$(r.g)}</text>`;
+    s+=`<text x="${cx}" y="${H-9}" text-anchor="middle" class="axislab">Y${r.year}</text>`;
+  });
+  // cumulative net line
+  let pts=d.rows.map((r,i)=>`${padL+bw*i+bw/2},${y(r.cum)}`).join(" ");
+  s+=`<polyline points="${pts}" fill="none" stroke="#051C2C" stroke-width="2"/>`;
+  d.rows.forEach((r,i)=>{const cx=padL+bw*i+bw/2;s+=`<circle cx="${cx}" cy="${y(r.cum)}" r="3" fill="#051C2C"/>`;});
+  s+=`</svg>`;
+  $("#phase-chart").innerHTML=s;
+  // table
+  $("#phase-tbody").innerHTML=d.rows.map(r=>`
+    <tr><td>Year ${r.year}</td><td class="mono">${f1(r.gpct)}%</td><td class="mono">${f$(r.g)}</td>
+    <td class="mono" style="color:var(--green)">${f$(r.sf)}</td><td class="mono" style="color:var(--blue)">${f$(r.net)}</td></tr>`).join("");
+  const ph=phaseArr(); const phSum=ph.reduce((a,b)=>a+b,0);
+  $("#ph-pct").textContent=phSum+"%";
+  $("#ph-gross").textContent=f$(d.gross);
+  $("#ph-sf").textContent=f$(d.sfTot);
+  $("#ph-net").textContent=f$(d.net);
+  // peaks
+  const peakNet=d.rows.reduce((m,r)=>r.net>m.net?r:m,d.rows[0]);
+  const peakGross=d.rows.reduce((m,r)=>r.g>m.g?r:m,d.rows[0]);
+  $("#phase-note").innerHTML=`Gross spend peaks in <b>Year ${peakGross.year}</b> at ${f$(peakGross.g)}. Because savings accrue late, the <b>net cash ask</b> peaks earlier in <b>Year ${peakNet.year}</b> at ${f$(peakNet.net)} and tapers as the program self-funds.`;
+  return d;
+}
+
+/* ---------- Narratives ---------- */
+function narratives(){
+  const td1=calcTD1(),td2=calcTD2(),bu1=calcBU1(),bu2=calcBU2();
+  const t=triangulate();
+  $("#narr-td1").innerHTML=`Underwriting the program at <b>${f1(A.td1_multiple)}×</b> the <b>${f$(A.savings)}</b> annual run-rate implies a gross investment of <b>${f$(td1)}</b> — a simple payback of <b>~${f1(A.td1_multiple)} years</b> on a run-rate basis (before phasing/ramp).`;
+  $("#narr-td2").innerHTML=`Ring-fencing <b>${f1(A.td2_pct)}%</b> of the <b>${f$(A.techSpend)}</b> annual tech budget for modernization over <b>${A.horizon} years</b> (a cumulative ${f$(A.techSpend*A.horizon)} spend base) implies <b>${f$(td2)}</b> — about <b>${f$(td2/A.horizon)}/yr</b> of dedicated funding on top of run-the-bank.`;
+  const rows=bu1Rows();
+  const heavy=rows.filter(r=>["rewrite","repurchase"].includes(r.k));
+  const heavySub=heavy.reduce((s,r)=>s+r.sub,0);
+  const totSub=bu1Subtotal();
+  const heavyMix=heavy.reduce((s,r)=>s+r.mix,0);
+  const heavyShare=totSub?Math.round(heavySub/totSub*100):0;
+  $("#narr-bu1").innerHTML=`Across <b>${A.apps}</b> applications, the disposition mix at blended unit costs (×${f1(A.bu1_complexity)} complexity) totals <b>${f$(totSub)}</b> at app level; a <b>${A.bu1_overhead}%</b> program-overhead uplift brings gross to <b>${f$(bu1)}</b>. Rewrites + SaaS repurchasing are <b>${heavyMix}%</b> of the estate but <b>~${heavyShare}%</b> of the cost — the natural focus for scope discipline.`;
+  const labor=A.bu2_fte*A.horizon*(A.bu2_rate/1000);
+  $("#narr-bu2").innerHTML=`Sustaining <b>~${A.bu2_fte.toLocaleString()}</b> blended delivery FTE-equivalents on modernization for <b>${A.horizon} years</b> at <b>$${A.bu2_rate}K</b> fully-loaded is <b>${f$(labor)}</b> of labor; +<b>${A.bu2_nonlabor}%</b> non-labor and a <b>${A.bu2_ai}%</b> GenAI productivity benefit nets to <b>${f$(bu2)}</b>.`;
+
+  // phase narrative
+  const d=phaseData();
+  $("#narr-phase").innerHTML=`Under the <b>${labelPhase(A.phase)}</b> profile, the <b>${f$(t.mean)}</b> gross is spread across 5 years; netting the back-weighted self-funding (savings realize later) leaves a cumulative net cash ask of <b>${f$(d.net)}</b>. The committee sees a profile that <b>front-loads the ask and self-funds toward the back half</b>.`;
+
+  // defensibility
+  const inc=approaches().filter(a=>a.inc).length;
+  const retire=A.apps*(A.bu1.retire.mix/100);
+  $("#defensibility").innerHTML=`
+  <p style="margin-top:0">The ask is triangulated from <b>${inc} independent lenses</b>, each sized against a <b>different anchor</b> — so no single assumption drives the answer:</p>
+  <div class="kv"><span><span class="tag td">TD·A</span> &nbsp;Savings-multiple — anchored to the <b>$${A.savings}M run-rate</b></span><b class="mono">${f$(td1)}</b></div>
+  <div class="kv"><span><span class="tag td">TD·B</span> &nbsp;Budget-share — anchored to the <b>$${A.techSpend}M/yr spend</b></span><b class="mono">${f$(td2)}</b></div>
+  <div class="kv"><span><span class="tag bu">BU·A</span> &nbsp;6Rs per-app — anchored to the <b>${A.apps}-app estate</b></span><b class="mono">${f$(bu1)}</b></div>
+  <div class="kv"><span><span class="tag bu">BU·B</span> &nbsp;Capacity — anchored to the <b>~23K workforce</b></span><b class="mono">${f$(bu2)}</b></div>
+  <div class="divider"></div>
+  <p>The four converge within a <b>${f$(t.min)}–${f$(t.max)}</b> band (mean <b>${f$(t.mean)}</b>), giving confidence the order of magnitude is right rather than an artifact of one method. The <b>gross</b> figure is the full program cost; deducting <b>${A.selffund_pct}%</b> self-funding — capacity freed by retiring <b>~${Math.round(retire)}</b> non-target apps plus run-rate savings banked in-flight — yields the <b>net ${f$(t.mean*(1-A.selffund_pct/100))}</b> committee ask. Every factor above is editable, so the assumption set can be pressure-tested live in the room.</p>`;
+}
+function labelPhase(p){return {sigmoid:"S-curve (ramp & taper)",frontloaded:"front-loaded",backloaded:"back-loaded",even:"even",custom:"custom"}[p];}
+
+/* ---------------- Orchestration ---------------- */
+function renderAll(rebuildTable=true){
+  renderControls();
+  if(rebuildTable) render6Rs();
+  else { // refresh computed cells without rebuilding inputs
+    const rows=bu1Rows();
+    const cells=$$("#tbl-6rs tbody tr");
+    rows.forEach((r,i)=>{
+      const tds=cells[i].querySelectorAll("td");
+      tds[2].textContent=Math.round(r.apps);
+      tds[4].textContent=f$(r.sub);
+    });
+    const mix=rows.reduce((s,r)=>s+r.mix,0), apps=rows.reduce((s,r)=>s+r.apps,0);
+    $("#f-mix").textContent=mix+"%"; $("#f-apps").textContent=Math.round(apps); $("#f-sub").textContent=f$(bu1Subtotal());
+    const note=$("#mix-note");
+    if(Math.round(mix)!==100) note.innerHTML=`<span class="warn">⚠ Disposition mix sums to ${mix}% (allocates ${Math.round(apps)} of ${A.apps} apps).</span> Calculation uses the mix as entered.`;
+    else note.innerHTML=`<span class="ok">✓ Mix sums to 100% — all ${A.apps} applications allocated.</span>`;
+  }
+  renderHeadline();
+  triChart();
+  phaseChart();
+  narratives();
+}
+
+function wire(){
+  renderChips();
+  // sliders / number inputs with data-key
+  $$("input[data-key]").forEach(inp=>{
+    inp.addEventListener("input",e=>{
+      let v=parseFloat(e.target.value);
+      if(isNaN(v))v=0;
+      set(e.target.dataset.key,v);
+      renderAll(false);
+    });
+  });
+  // include checkboxes
+  $$("input[data-inc]").forEach(cb=>cb.addEventListener("change",e=>{
+    A.include[e.target.dataset.inc]=e.target.checked;renderAll(false);
+  }));
+  // presets
+  $$("#presets button").forEach(b=>b.addEventListener("click",()=>{
+    $$("#presets button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    applyPreset(b.dataset.p);
+  }));
+  $("#resetBtn").addEventListener("click",()=>{
+    $$("#presets button").forEach(x=>x.classList.toggle("active",x.dataset.p==="base"));
+    A=clone(BASE);renderAll(true);
+  });
+  // phase segmented
+  $$("#phaseseg button").forEach(b=>b.addEventListener("click",()=>{
+    $$("#phaseseg button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    A.phase=b.dataset.ph;
+    if(A.phase==="custom") promptCustom();
+    renderAll(false);
+  }));
+  renderAll(true);
+}
+function applyPreset(p){
+  const P=PRESETS[p];
+  A.td1_multiple=P.td1_multiple;A.td2_pct=P.td2_pct;
+  A.bu1_overhead=P.bu1_overhead;A.bu1_complexity=P.bu1_complexity;
+  A.bu2_fte=P.bu2_fte;A.bu2_rate=P.bu2_rate;A.bu2_nonlabor=P.bu2_nonlabor;A.bu2_ai=P.bu2_ai;
+  A.selffund_pct=P.selffund_pct;
+  for(const k in P.mix) A.bu1[k].mix=P.mix[k];
+  renderAll(true);
+}
+function promptCustom(){
+  const cur=A.custom.join(", ");
+  const inp=prompt("Enter 5 yearly weights (any scale, will be normalized), comma-separated:",cur);
+  if(inp){
+    const arr=inp.split(/[,\s]+/).map(Number).filter(n=>!isNaN(n)).slice(0,5);
+    while(arr.length<5)arr.push(0);
+    A.custom=arr;
+  }
+}
+
+document.addEventListener("DOMContentLoaded",wire);
+</script>
+</body>
+</html>
