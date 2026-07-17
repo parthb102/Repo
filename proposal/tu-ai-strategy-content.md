@@ -127,9 +127,28 @@ Per VG: no HR / F&A / corporate functions — too small for TU. Contact center a
 
 ## Slide 8 — Deep dives 4+5: Assess impact → heatmap scorecard
 
-Leads are fine as drafted ("Assess impact by selected prioritization criteria… / …to develop a heatmap scorecard of domains for investment").
+Leads are fine as drafted ("Assess impact by selected prioritization criteria… / …to develop a heatmap scorecard across domains").
 
-⚠️ Flag for VG: the Inputs list cites "McKinsey proprietary AI / GenAI value sizing asset, including proprietary list of reference use cases and benchmark impacts." On the call he said he's not sure these assets are real. Neutral fallback: "Reference library of AI use cases with benchmark impacts by function and domain."
+**Substance fixes (the empty box + unlabeled grid read as decoration):**
+
+1. **Right side — real scorecard, not an abstract grid.** Rows = the six domains, columns = the three criteria + rollup, ILLUSTRATIVE sticker. Legend: ● High ◐ Med ○ Low (not an impact gradient). Optional column: "Value at stake, $M — illustrative."
+
+   | Domain | Value potential | Readiness | Feasibility | Priority |
+   |---|---|---|---|---|
+   | Contact center / servicing | High | High | High | Big bet |
+   | Client onboarding | High | Med | High | Big bet |
+   | Fraud risk & compliance | High | Med | Med | |
+   | Sales enablement | Med | High | High | No-regret |
+   | Marketing | Med | Med | High | No-regret |
+   | PDLC / SDLC | Med | High | Med | |
+
+2. **Left box** — drop a mini of slide 15 in (it is the value-potential assessment example), same move as the blueprint previews on page 6.
+
+3. **Left caption (replace circular filler):** "For each domain, activities are mapped, the share of work AI can power is estimated against benchmarks, and the impact is priced in dollars — productivity gains plus revenue growth"
+
+4. **Outputs (replace — also kills the proprietary-asset line VG flagged):** "Ranked heatmap of all candidate domains — value at stake, readiness, and feasibility on one page — pressure-tested bottom-up with SMEs; the draft shortlist for the CM1 prioritization workshop"
+
+5. Optional: number the column headers as a pipeline — "1 — Size the value in each domain" / "2 — Compare domains on one scorecard" — so the chevron carries a story.
 
 ---
 
