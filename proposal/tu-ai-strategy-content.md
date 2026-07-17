@@ -40,7 +40,7 @@ Alternate: Six building blocks take TU from scattered AI ideas to a value-backed
 | # | Title | Description |
 |---|-------|-------------|
 | 1 | Identify high-value domains | Full set of domains where material value is at stake, anchored in strategic priorities and value pools |
-| 2 | Establish a detailed baseline | Current state of each domain including process flow, personnel, performance (e.g., FTE utilization, cycle time) |
+| 2 | Establish a detailed baseline | Current state of each domain including process flow, personnel, performance (e.g., FTE utilization, unit cost) |
 | 3 | Develop prioritization framework | Aligned set of criteria and weightings to score domains on value, readiness, and feasibility |
 | 4 | Assess impact | Each domain scored on AI impact potential (e.g., revenue growth, cost reduction), strategic readiness, and feasibility |
 | 5 | Develop a heatmap scorecard | Single view of all domains scored on each criterion, rolled up into a ranked shortlist for the prioritization workshop |
