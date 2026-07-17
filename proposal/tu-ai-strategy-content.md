@@ -43,10 +43,12 @@ Alternate: Six building blocks take TU from scattered AI ideas to a value-backed
 | 2 | Establish a detailed baseline | Current state of each domain including workflows, personnel, performance (e.g., sub-journeys, data flows, FTE utilization) |
 | 3 | Develop prioritization framework | Aligned set of criteria and weightings to score domains on value, readiness, and feasibility |
 | 4 | Assess impact | Each domain scored on AI impact potential (e.g., revenue growth, cost reduction), strategic readiness, and feasibility |
-| 5 | Develop a heatmap scorecard | Rank-ordering of domains across the three dimensions, surfacing the big bets and no-regret moves |
+| 5 | Develop a heatmap scorecard | Single view of all domains scored on each criterion, rolled up into a ranked shortlist for the prioritization workshop |
 | 6 | Build execution roadmap | Sequenced path through the priority domains, with owners, milestones, and enabling investments |
 
 Changes vs. current: box 3 now names all three dimensions (was "value and feasibility" only); box 4 fixes the typo ("risk),and") and the wrong example mapping — readiness examples are talent/data, not "risk". Fit note: box 4 caps at ~120 chars before it wraps to a 5th line and spills the card; the version above fits. VG's full impact list (revenue growth, cost reduction, cost avoidance, risk reduction) doesn't fit in the box — it lives on slide 7 (see below).
+
+Box 5 rewritten — the old line ("Rank-ordering of domains across the three dimensions, surfacing the big bets and no-regret moves") was substantively off in two ways: scoring domains on the dimensions is block 4's job (block 5's distinct job is consolidating those scores into one comparable view and an aggregate ranking), and "big bets / no-regret moves" is the vocabulary of the 2x2 quadrants on the framework page, not what a scorecard outputs. Alt if you want continuity with the quadrant language: "Single view of all domains scored on each criterion, rolled up into a ranked shortlist of big bets and no-regret moves."
 
 Footer bar (keep): Every building block is backed by proven tools and methodologies – details follow
 
@@ -56,12 +58,24 @@ Footer bar (keep): Every building block is backed by proven tools and methodolog
 
 **Lead (keep current):** Identify high-value domains: End-to-end workflows with clear potential to demonstrate impact
 
-**"What is a domain?" (left column — keep current 3 bullets):**
-- **Focused business areas or E2E workflows** where AI-related use cases can be grouped and transformed together
-- **Represent a meaningful value pool**, with clear potential to improve revenue, productivity, customer experience, risk management, or speed-to-market
-- Broad enough to **enable transformation beyond a single use case**, but specific enough to assign ownership, assess feasibility, and sequence execution
+**"What is a domain?" (left column — tightened, ~25% shorter):**
+- **One unit of transformation** — an end-to-end journey, workflow, or function reimagined as a whole, not use case by use case
+- **A meaningful value pool** — material upside in revenue, cost, risk, or customer experience
+- **Big enough to matter, specific enough to own** — one accountable owner, a measurable baseline, a sequenceable roadmap
 
-**Goldilocks columns (keep):** Entire enterprise – Too big / E2E domain – Just right / Use case – Too small, with current example lists.
+**Goldilocks headers (keep):** Entire enterprise – Too big / E2E domain – Just right / Use case – Too small
+
+**Too big — examples (replace all three):**
+1. All customer operations
+2. Marketing + sales + service at once
+3. Enterprise "AI everywhere" program
+
+**Too small — examples (replace all):**
+1. Call summarization for one queue
+2. Auto-drafting marketing emails
+3. OCR for one onboarding document
+
+Design intent: each extreme is one of the six "just right" domains either blown up or shrunk down (all customer operations ↔ contact center; commercial engine ↔ marketing / sales enablement; call summarization ↔ contact center; marketing emails ↔ marketing; onboarding OCR ↔ client onboarding), so the Goldilocks logic reads without explanation. Spares: "Enterprise-wide risk & compliance" (too big); "Triage bot for one dispute type," "Password-reset chatbot" (too small). Fit note: keep entries ≤ ~35 chars — these columns hold two lines max; the current layout has 3 too-big slots and 2 too-small slots, so drop one too-small item or add a slot.
 
 **"Examples of typical domains" (the six from the call — resolves the "Change examples" sticky):**
 1. PDLC / SDLC
@@ -164,9 +178,24 @@ Tighter alternate: Build execution roadmap: Sequence priority domains and enabli
 
 ---
 
+## Where Yas's BMO frameworks slot
+
+Example-output coverage per building block today: 1 → page 5 itself · 2 → pp. 12–13 (onboarding blueprints) · 3 → p. 14 (2x2) · 4 → p. 15 (marketing sizing) · **5 → nothing** · 6 → p. 9 (illustrative Gantt, in main flow).
+
+So, by what actually arrives:
+- **Scored domain heatmap (domains × criteria)** → the priority catch. Sanitized appendix page behind slide 8 with an EXAMPLE OUTPUT sticker. Fills block 5 — the only block with no example output today (slide 8's right panel is just a schematic).
+- **Roadmap / sequencing page** → candidate to replace slide 9's body; VG said he doesn't like the current roadmap page.
+- **Prioritization criteria or a 2x2** → don't add pages — duplicates slides 7/14. Harvest better wording, scoring scales, or weights into ours.
+- **Value-sizing methodology** → appendix behind slide 15; also use it to firm up slide 8's Inputs list (could replace the "proprietary asset" line with something demonstrably real).
+- **Engagement work plan** → mine for slide 10 activities / "what you get" language only; no new page.
+
+Rule of thumb: the main flow (4–10) is already complete 1:1 against the six blocks, so BMO material lands as sanitized EXAMPLE OUTPUT appendix pages — one per block where we lack proof — not as new main-flow pages.
+
+---
+
 ## Open items (not content)
 
 1. **TU's "chicken scratch" initiatives page** — VG wanted it kept in the appendix; it's not in the current vDraft. Re-add from the immersion doc.
-2. **BMO frameworks from Yas** — pending; slot behind slides 7/8 when they arrive.
+2. **BMO frameworks from Yas** — pending; slotting map above.
 3. **Slide 8 proprietary-asset language** — confirm with VG before it goes out (see flag above).
 4. Slides 12–13 (sanitized onboarding blueprints) are already embedded as previews on slide 6 — nothing needed unless the JPM version replaces them.
