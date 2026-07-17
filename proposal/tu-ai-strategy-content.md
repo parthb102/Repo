@@ -165,7 +165,7 @@ Tighter alternate: Build execution roadmap: Sequence priority domains and enabli
 **Title:** How we could partner with you on this journey
 *(current says "How we will partner…"; VG's words were "how we could partner with you on this journey")*
 
-**Week headers:** Week 1: Identify high-value domains · Week 2: Baseline and value potential · Week 3: Readiness and feasibility assessment · Week 4: CM1 prioritization workshop
+**Week headers (verb-start):** Week 1: Identify high-value domains · Week 2: Baseline domains and size the value · Week 3: Assess readiness and feasibility · Week 4: Run the CM1 prioritization workshop *(outcome-flavored alt: "Align on priorities at the CM1 workshop")*
 
 **Grid (current draft content is aligned — canonical copy below):**
 
