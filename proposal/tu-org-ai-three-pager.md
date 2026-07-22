@@ -129,3 +129,28 @@ Lego blocks with a timeline on top — not a work plan. Tracks can run staggered
 - **$-numbers decision:** the SWP deck already socialized $300M+ total ($50M+ spans/layers + leadership density, $60–70M GLS 2.0, 20–30%+ AI efficiency on a rightsized base). Decide with Megha whether page 1 pre-loads the $300M+ headline or holds it for the meeting.
 - **"What about everything else?" hedge (optional):** one line if asked about work outside the 2–3 domains: "Business-led reinvention and grassroots enablement continue in parallel — this program concentrates leadership attention where the largest value pools sit."
 - **SWP deck version:** title page says April 10, 2026 but the file is `20260709_..._vF` — confirm which is canonical before citing dates.
+
+---
+
+## Page 1 copy v2 — post-feedback (researched positioning, de-dashed)
+
+**Title:** TU is at an inflection point: choosing where AI creates value and building the organization to deliver it
+
+**Setup line:** TU has evolved from its credit bureau heritage into a global information and insights company, and with OneTru it now runs as a platform business, a thick platform with thin products on top.¹ Its AI journey has begun, though still early and in pockets. Two tracks follow:
+
+**Track 1:** TU is embarking on a top-down effort to identify and prioritize the high priority domains² for AI-led reimagination, the few cross-functional domains that typically hold 40-50% of the enterprise value at stake³. TU leadership has begun an inventory of AI initiatives; the next step is a framework to assess, size, and choose where to focus.
+
+**Track 2:** In parallel, TU must design the organization of the future. The structure has not kept pace with what the company is becoming; in leadership's own words, a global platforms era company in a 2012 era structure. The imperative spans five fronts:
+
+**Interlock (punchy):** The tracks feed each other: transform a domain, reshape its roles and skills, and fold what we learn back into the enterprise workforce plan. Every wave makes the next one smarter.
+
+**Close:** Today we align on the questions each track must answer and the work ahead for the next quarter.
+
+**Footnotes:**
+1. Venkat Achanta, TU Chief Technology, Data and Analytics Officer: "We are building a thick platform with thin products on top" (Forbes, May 2025). OneTru is TU's solution enablement platform, launched March 2024.
+2. Domains: focused business areas or end-to-end workflows where related AI use cases can be grouped and transformed together; broad enough to move beyond single use cases, specific enough to assign ownership and sequence execution.
+3. McKinsey cross-industry experience; share of AI-addressable value typically concentrated in a small number of cross-functional domains.
+
+**Optional CEO quote (setup line or talk track):** "After several years of transformational investment, TransUnion has built a global platform designed for scale. We are now at a strategic inflection point, ready to unlock the full value of what we've built for an AI-driven economy." — Chris Cartwright, 2026 Investor Day (March 10, 2026)
+
+**Positioning evidence (for Megha's accuracy check):** TU never says "product-first" or "solution-centric" verbatim. Verified vocabulary: "a global information and insights company" (boilerplate + 10-K, constant 2019-2026); credit bureau as "our heritage as a credit reporting agency" (10-K); seven Tru-branded "solution lines" (Feb 2023 rebrand); "integrated product platform, branded OneTru" (Nov 2023); "solution enablement platform" (Mar 2024 launch, still canonical in Mar 2026); "solution suites" (Q4 2024 results); "a thick platform with thin products on top" (Achanta, Forbes, May 2025); "a global platform designed for scale" at "a strategic inflection point ... for an AI-driven economy" (Cartwright, 2026 Investor Day).
