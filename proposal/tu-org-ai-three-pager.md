@@ -44,8 +44,33 @@ Framed DD-style: the questions the program must answer, not the activities it ru
 2. Where does today's structure deviate most from benchmark — and what is the value at stake in closing the gap?
 
 **Platform org of the future**
-3. What can TU learn from genuine platform organizations (e.g., Adobe; candidates to confirm: Atlassian, Stripe) — versus GM-model operators (e.g., Amazon, Google) that are often cited but organized differently — and which model fits TU?
+3. Which archetypes do true platform companies follow — central platform division (e.g., Atlassian, Salesforce), federated platform services (e.g., AWS) — and which is right for TU?
 4. What are the core design choices — US vs. international P&L, regional vs. global layers, where technologists and platform product managers sit — and **what would TU have to believe** to make each?
+
+### Platform-org archetypes — research brief (for the deep-dive page)
+
+Archetypes that genuine thick-platform / thin-product companies follow. The GM model appears only as the contrast — the "from," not the "to" (per Megha: Google and Amazon retail follow GM models and are not platform orgs).
+
+**A. Central platform division — "platform as a product"**
+One platform organization with its own leadership, roadmap, funding, and platform product managers; product units are thin and consume the platform through internal contracts.
+- Atlassian: dedicated Platform division after its cloud migration — identity, editor, data platform shared by Jira, Confluence, and the rest
+- Salesforce: the core Salesforce Platform underpinning the Sales / Service / Marketing Clouds
+- Microsoft: platform assets (Azure, Graph, identity) as first-class divisions with product experiences on top
+- What TU must believe: platform can be funded centrally without being captured by the loudest product team; internal consumers will behave like customers; platform-PM talent can be hired or grown
+- Fit signal: the closest match to TU's stated "thick platform, thin products" ambition
+
+**B. Federated platform services — service-owner model**
+No single platform division; the platform is a mesh of independently owned services behind hard API contracts, each with a single-threaded owner; products compose services.
+- AWS: hundreds of service teams, "you build it, you run it"
+- What TU must believe: elite API and ops discipline across the org; tolerance for duplication at the edges
+- Fit signal: usually a later-stage destination — demanding for a company still standardizing its platform
+
+**C. GM-led with shared platform underneath — the contrast archetype**
+Business GMs own product P&Ls end to end (product + engineering + go-to-market); a central function provides shared technology, but businesses can and do build around it.
+- Amazon retail businesses, YouTube within Google — Megha's own examples of what platform orgs are *not*
+- Why it matters for TU: this is the drift risk of the current functional/regional structure — platform fragmentation with every P&L optimizing locally
+
+**Design axes that cut across archetypes** (these become the "choices and what you must believe" page): platform as P&L vs. cost center vs. internally charged; who owns the platform roadmap (CTO vs. platform president vs. product council); thin product P&Ls vs. one enterprise P&L; central platform funding vs. consumption-based; US vs. international P&L and regional layers (AZ's live question); where platform PMs and technologists sit.
 
 **Future-ready workforce (strategic workforce planning in the AI era)**
 5. How will AI and automation change TU's talent demand over the next 3–5 years?
