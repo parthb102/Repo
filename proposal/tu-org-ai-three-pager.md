@@ -154,3 +154,9 @@ Lego blocks with a timeline on top — not a work plan. Tracks can run staggered
 **Optional CEO quote (setup line or talk track):** "After several years of transformational investment, TransUnion has built a global platform designed for scale. We are now at a strategic inflection point, ready to unlock the full value of what we've built for an AI-driven economy." — Chris Cartwright, 2026 Investor Day (March 10, 2026)
 
 **Positioning evidence (for Megha's accuracy check):** TU never says "product-first" or "solution-centric" verbatim. Verified vocabulary: "a global information and insights company" (boilerplate + 10-K, constant 2019-2026); credit bureau as "our heritage as a credit reporting agency" (10-K); seven Tru-branded "solution lines" (Feb 2023 rebrand); "integrated product platform, branded OneTru" (Nov 2023); "solution enablement platform" (Mar 2024 launch, still canonical in Mar 2026); "solution suites" (Q4 2024 results); "a thick platform with thin products on top" (Achanta, Forbes, May 2025); "a global platform designed for scale" at "a strategic inflection point ... for an AI-driven economy" (Cartwright, 2026 Investor Day).
+
+---
+
+## v3 restructure — post senior-partner feedback (Jul 22)
+
+Diagnosis: journey page last, question pages disconnected from each other and from outcomes. New order: Context → Journey at a glance (simplified, moved up) → Track 1 questions (adds people impact + bottom-up ideation) → Track 2 questions (consumes Track 1; outcome = one integrated org and talent plan) → How we work together (the real workplan). Content in chat log / final message of Jul 22 session.
