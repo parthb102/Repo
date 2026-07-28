@@ -96,16 +96,14 @@ rewrite(shape(s, "TextBox 25"), [
      " and redesign priority workflows around human and AI collaboration"),
 ])
 rewrite(shape(s, "TextBox 4"), [
-    ("Week 0:", " launch data requests, confirm stakeholders, finalize surveys, and frame hypotheses"),
-    ("Weeks 1-2:", " baseline spend across applications, infrastructure, cybersecurity, and labor; benchmark cost, productivity, and delivery and engineering maturity"),
-    ("Weeks 3-6:", " deep dives into high-potential areas (infrastructure, vendor contracts, developer productivity), pressure tested in 5-10 leadership interviews"),
-    ("Weeks 7-8:", " prioritize initiatives with savings, owners, and implications, sequenced into a high-level roadmap"),
+    ("Baseline and benchmark", " technology spend across applications, infrastructure, cybersecurity, and labor, comparing cost, productivity, and delivery maturity against peers"),
+    ("Pressure test high-potential areas", " through deep dives (infrastructure, vendor contracts, developer productivity) and 5-10 leadership interviews"),
+    ("Prioritize initiatives into a high-level roadmap", " with savings, owners, sequencing, and implementation implications"),
 ], size=11)
 rewrite(shape(s, "TextBox 5"), [
-    ("Week 0:", " inventory business domains and collect workforce, cost, and process data"),
-    ("Weeks 1-2:", " confirm domains in scope, baseline each, and size initial AI value at stake"),
-    ("Weeks 3-4:", " validate value with leaders and select the two priority domains on value, readiness, and feasibility"),
-    ("Weeks 5-8:", " reimagine both domains: future-state workflows, roles of people and AI agents, talent model, controls, and technology requirements"),
+    ("Baseline all business domains", " on workforce, cost, and process data, and size the initial AI value at stake in each"),
+    ("Validate value with leaders", " and select the two priority domains on value, readiness, and feasibility"),
+    ("Reimagine both domains end to end,", " defining future-state workflows, roles of people and AI agents, talent model, controls, and technology requirements"),
 ], size=11)
 rewrite(shape(s, "TextBox 38"), [
     ("", "Celonis Process Intelligence"),
@@ -133,7 +131,7 @@ r = p.add_run()
 r.text = "Two tracks over the same 8 weeks: growth, effectiveness, and efficiency levers, not a cost exercise alone"
 r.font.size = Pt(11); r.font.color.rgb = MED; r.font.name = "Arial"
 
-sticky(s, "MERGED: kept this page's table layout from the 07/28 pass; ported the sharpened copy. Objectives front-bolded; Approach bullets now mirror p3/p4 phase for phase; 'AA tool' named client-readably; 'business aligned business' typo fixed; outputs now commit to two domains (this file said 1-2 in one cell and two in another); en dashes removed; holistic-levers positioning added under the title.")
+sticky(s, "MERGED: kept this page's table layout from the 07/28 pass; ported the sharpened copy. Objectives front-bolded; Approach kept thematic, tightened to align with the p3/p4 plans (timing lives on those pages); 'AA tool' named client-readably; 'business aligned business' typo fixed; outputs now commit to two domains (this file said 1-2 in one cell and two in another); en dashes removed; holistic-levers positioning added under the title.")
 
 # ==================== SLIDE 3: Track 1 workplan ====================
 s = slides[2]
