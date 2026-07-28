@@ -1,0 +1,318 @@
+{
+ "track1": {
+  "title": "1. Technology Productivity: An 8-week assessment to size and prioritize high-value technology opportunities",
+  "subtitle": "Four phases that establish where technology spend goes today, where savings can be released, and what to launch first",
+  "phases": [
+   {
+    "number": "1",
+    "name": "Mobilize and prepare",
+    "timing": "Week 0 (before kickoff)",
+    "activities": [
+     {
+      "lead": "Launch data requests",
+      "detail": "and prepare incoming data for analysis across applications, infrastructure, cybersecurity, and labor"
+     },
+     {
+      "lead": "Confirm stakeholders and logistics",
+      "detail": ", including meetings, working sessions, workshops, and the steering committee calendar"
+     },
+     {
+      "lead": "Finalize surveys and respondents",
+      "detail": "and prepare for launch in week 1"
+     },
+     {
+      "lead": "Develop initial hypotheses",
+      "detail": "on where the highest-value opportunities are most likely to sit"
+     }
+    ]
+   },
+   {
+    "number": "2",
+    "name": "Establish spend baseline and compare with benchmarks",
+    "timing": "Weeks 1-2",
+    "activities": [
+     {
+      "lead": "Baseline technology spend",
+      "detail": "across applications, infrastructure, cybersecurity, and labor, at the level of detail needed to see where costs can be reduced"
+     },
+     {
+      "lead": "Benchmark cost profile and productivity",
+      "detail": "against peer and cross-industry sets (Tech Performance Assessment)"
+     },
+     {
+      "lead": "Assess delivery and engineering maturity",
+      "detail": "using the Technology Quotient and the Developer Velocity Index"
+     },
+     {
+      "lead": "Hold working sessions with technology leaders",
+      "detail": "to share and refine the benchmark results, and build early hypotheses on gaps and value at stake"
+     }
+    ]
+   },
+   {
+    "number": "3",
+    "name": "Identify and detail high-potential areas",
+    "timing": "Weeks 3-6",
+    "activities": [
+     {
+      "lead": "Run detailed analyses to optimize spend",
+      "detail": "and conduct deep dives into all high-potential areas, e.g., infrastructure spend, vendor spend via line-by-line contract reviews, and developer productivity"
+     },
+     {
+      "lead": "Assess tech debt using the Tech Debt Index",
+      "detail": "to identify where accumulated debt most constrains delivery speed and resilience"
+     },
+     {
+      "lead": "Conduct 5-10 interviews",
+      "detail": "with business and technology leaders to pressure test the opportunity areas"
+     },
+     {
+      "lead": "Size each opportunity",
+      "detail": "against the share of spend we can realistically address, with the actions required to capture it"
+     }
+    ]
+   },
+   {
+    "number": "4",
+    "name": "Prioritize initiatives and detail roadmap",
+    "timing": "Weeks 7-8",
+    "activities": [
+     {
+      "lead": "Shape recommendations into go-forward initiatives",
+      "detail": "prioritized on value at stake and ease of delivery"
+     },
+     {
+      "lead": "Detail the initiative plan",
+      "detail": ", capturing initiatives to launch, estimated savings, potential owners, and high-level implementation implications (e.g., tooling)"
+     },
+     {
+      "lead": "Develop a high-level roadmap",
+      "detail": ", setting out sequencing and dependencies across initiatives"
+     },
+     {
+      "lead": "Align leadership across both tracks",
+      "detail": ", confirming owners, immediate actions, and how these technology initiatives sequence with the Track 2 domain work"
+     }
+    ]
+   }
+  ],
+  "deliverables": [
+   "Kickoff pack: data request list, stakeholder and meeting map, survey launch plan, and initial hypotheses",
+   "Technology spend and productivity baseline, benchmarked against peer and cross-industry sets",
+   "Quantified savings opportunities by area, supported by deep-dive analyses and leadership input",
+   "Prioritized initiative plan and leadership-aligned high-level roadmap with sequencing, dependencies, and owners"
+  ],
+  "footer": "Governance: steering committee meets every two weeks to review progress, align on direction, and remove roadblocks, closing with a joint leadership session across both tracks in week 8"
+ },
+ "track2": {
+  "title": "2. AI-enabled Reimagination: An 8-week approach to size AI value and reimagine two priority domains",
+  "subtitle": "Five phases that size the value at stake across the confirmed set of domains, prioritize them, then reimagine the top two end to end",
+  "phases": [
+   {
+    "number": "1",
+    "name": "Mobilize and prepare",
+    "timing": "Week 0 (before kickoff)",
+    "activities": [
+     {
+      "lead": "Inventory the business domains",
+      "detail": "to define the full set for impact sizing and prioritization (e.g., Personal Investor, Personal Wealth)"
+     },
+     {
+      "lead": "Collect available domain data",
+      "detail": ", e.g., workforce and headcount, cost, volume, decision points, and hand-offs between people"
+     },
+     {
+      "lead": "Confirm stakeholders and logistics",
+      "detail": "establishing the calendar for meetings, workshops, and the steering committee"
+     }
+    ]
+   },
+   {
+    "number": "2",
+    "name": "Establish baseline and size initial value at stake",
+    "timing": "Weeks 1-2",
+    "activities": [
+     {
+      "lead": "Confirm the domains in scope",
+      "detail": "where material value is at stake, anchored in strategic priorities and value pools"
+     },
+     {
+      "lead": "Build a detailed baseline per domain",
+      "detail": ", covering process flow, personnel, and performance (e.g., FTE utilization, service level attainment)"
+     },
+     {
+      "lead": "Size the AI value at stake",
+      "detail": ", using our sizing tool to produce an initial view by domain"
+     }
+    ]
+   },
+   {
+    "number": "3",
+    "name": "Refine impact potential and prioritize domains",
+    "timing": "Weeks 3-4",
+    "activities": [
+     {
+      "lead": "Validate the value at stake",
+      "detail": "in working sessions with business, technology, finance, and corporate functions leaders to review and refine the estimates"
+     },
+     {
+      "lead": "Build the prioritization framework",
+      "detail": "across value potential (cost), strategic readiness (data, talent), and feasibility (decision complexity and judgment, risk and regulatory scrutiny)"
+     },
+     {
+      "lead": "Score the confirmed domains against the criteria",
+      "detail": "to produce a heatmap scorecard that ranks them and selects the two priority domains, and secure process data access so reimagination can begin in week 5"
+     }
+    ]
+   },
+   {
+    "number": "4",
+    "name": "Reimagine priority domain 1",
+    "timing": "Weeks 5-6",
+    "activities": [
+     {
+      "lead": "Reimagine the end-to-end process",
+      "detail": "using Celonis Process Intelligence and the McKinsey AI Workflow Library to define the future-state journey, AI and non-AI solutions, the roles of people and AI agents, and how exceptions are handled"
+     },
+     {
+      "lead": "Refine the blueprint",
+      "detail": "in workshops with business leaders and subject matter experts to pressure test and finalize the design"
+     },
+     {
+      "lead": "Define the supporting implications",
+      "detail": ", setting out the talent, operating model, data, technology, and control requirements"
+     }
+    ]
+   },
+   {
+    "number": "5",
+    "name": "Reimagine priority domain 2 and consolidate",
+    "timing": "Weeks 7-8",
+    "activities": [
+     {
+      "lead": "Reimagine the second domain end to end",
+      "detail": ", running the same Celonis-enabled approach to define the future-state journey, AI and non-AI solutions, the roles of people and AI agents, and how exceptions are handled"
+     },
+     {
+      "lead": "Finalize the second blueprint",
+      "detail": "in workshops with business leaders and subject matter experts, then define the talent, operating model, data, technology, and control implications"
+     },
+     {
+      "lead": "Consolidate across both domains",
+      "detail": ", identifying reusable workflow components and shared data, technology, and control needs, and sequencing the domain work against the Track 1 initiatives it depends on"
+     }
+    ]
+   }
+  ],
+  "deliverables": [
+   "Domain inventory and data request pack, with confirmed stakeholder map and workshop calendar",
+   "Detailed baseline by domain and an initial view of AI value at stake across the confirmed set",
+   "Heatmap scorecard ranking the confirmed domains, with the two priority domains selected",
+   "Future-state blueprint for domain 1, with talent, operating model, data, technology, and control implications",
+   "Future-state blueprint for domain 2 and a high-level roadmap across both domains"
+  ],
+  "footer": "Governance: steering committee meets every two weeks to review progress, align on direction, and remove roadblocks, closing with a joint leadership session across both tracks in week 8"
+ },
+ "framing": {
+  "title": "An integrated 8-week approach across Technology Productivity and AI-enabled Reimagination",
+  "subtitle": "Two tracks, one fact base: how productive technology is today, and where AI can reshape how the work gets done",
+  "columns": [
+   {
+    "header": "1. Technology Productivity",
+    "objective_lead": "Establish the productivity of every technology dollar spent today,",
+    "objective_rest": " where to cut or rebalance investment to fund the future, and where capabilities stand relative to best in class, producing a holistic set of growth, effectiveness, and efficiency levers rather than a cost exercise alone.",
+    "approach": [
+     [
+      "Week 0, mobilize and prepare:",
+      " launch data requests, confirm stakeholders and logistics, finalize surveys, and frame initial hypotheses on where value sits"
+     ],
+     [
+      "Weeks 1-2, baseline and benchmark:",
+      " establish spend across applications, infrastructure, cybersecurity, and labor, then benchmark cost, productivity, delivery maturity, and engineering maturity"
+     ],
+     [
+      "Weeks 3-6, detail the opportunities:",
+      " deep dives into infrastructure, vendor contracts, developer productivity, and tech debt, pressure tested in 5-10 leadership interviews"
+     ],
+     [
+      "Weeks 7-8, prioritize and roadmap:",
+      " shape go-forward initiatives with estimated savings, owners, and implementation implications, and sequence them into a high-level roadmap"
+     ]
+    ],
+    "assets": [
+     [
+      "Tech Performance Assessment",
+      ": cost profile and productivity benchmarks"
+     ],
+     [
+      "Technology Quotient",
+      ": technology delivery maturity"
+     ],
+     [
+      "Tech Debt Index",
+      ": cost and risk of accumulated tech debt"
+     ],
+     [
+      "Developer Velocity Index",
+      ": engineering maturity and developer productivity"
+     ]
+    ],
+    "outputs": [
+     "Technology spend and productivity baseline, benchmarked against peer and cross-industry sets",
+     "Quantified savings opportunities by area, with the actions required to capture each",
+     "Prioritized initiatives with estimated savings, owners, and implementation implications",
+     "Leadership-aligned high-level roadmap with sequencing and dependencies"
+    ]
+   },
+   {
+    "header": "2. AI-enabled Reimagination",
+    "objective_lead": "Identify where AI creates the greatest business value across domains,",
+    "objective_rest": " then reimagine the highest-value workflows around people working alongside AI, moving from value at stake sized across the confirmed domains to two reimagined domains with blueprints and a roadmap.",
+    "approach": [
+     [
+      "Week 0, mobilize and prepare:",
+      " inventory the full set of business domains (e.g., Personal Investor, Personal Wealth) and collect data on headcount, cost, volume, decision points, and hand-offs"
+     ],
+     [
+      "Weeks 1-2, baseline and size initial value at stake:",
+      " confirm the domains where material value is at stake, baseline each on process flow, personnel, and performance, and size an initial view by domain"
+     ],
+     [
+      "Weeks 3-4, prioritize domains:",
+      " validate the value at stake with business, technology, finance, and corporate functions leaders, then rank domains on value, readiness, and feasibility to select two"
+     ],
+     [
+      "Weeks 5-8, reimagine the two priority domains:",
+      " design each future-state journey and the roles of people and AI agents, and set out the talent, operating model, data, technology, and control implications"
+     ]
+    ],
+    "assets": [
+     [
+      "AI value-at-stake sizing tool",
+      ": bottom-up sizing of AI impact by domain"
+     ],
+     [
+      "Celonis Process Intelligence",
+      ": end-to-end visibility into how work flows today, as the base for the redesign"
+     ],
+     [
+      "McKinsey AI Workflow Library",
+      ": AI and AI-agent workflow designs already proven by domain"
+     ]
+    ],
+    "outputs": [
+     "AI value at stake sized across the confirmed set of domains, with a scorecard that ranks them",
+     "Future-state workflow blueprints for the two priority domains, including AI and human roles",
+     "Talent, operating model, data, technology, and control implications",
+     "High-level roadmap across the two priority domains, with sequencing and dependencies"
+    ]
+   }
+  ],
+  "closingLine": "Both tracks run over the same 8 weeks against one fact base and a single steering committee, closing in a joint week 8 session that sets out where the value sits and the sequence to capture it"
+ },
+ "stickies": {
+  "track1": "REBUILT as a visual workplan (Cetera p30 style: numbered phase chevrons, matching activity columns, deliverables strip). Your sticky activities are all here, all 22 of them. TO CONFIRM: (1) prep labelled 'Week 0 (before kickoff)' so the 8-week clock still reads true; (2) 'steercos' rendered as 'steering committee' for the client, same fortnightly cadence as the original page; (3) the Tech Debt Index deep dive in wks 3-6 is not in your sticky, added because it is already a listed asset on p2, say the word and it goes; (4) 'contract teardowns' rendered as 'line-by-line contract reviews' for client readability. Your 'high-level' qualifier on the roadmap and implementation implications is kept.",
+  "track2": "REBUILT to your five phases with all 12 of your sticky activities. TO CONFIRM: (1) your wks 3-4 sticky says the scorecard 'identifies 1-2' domains, but wks 5-6 and 7-8 are both allocated to reimagination, so the page commits to two throughout. Say the word if you want the 1-2 optionality back. (2) Added a half-line in wks 3-4 to secure process data access, since Celonis needs system access before wk 5. (3) 'AA tool' rendered as 'AI value-at-stake sizing tool'. (4) 'controls' restored to the implications list (it was on the original p2). (5) 'human and agent roles' rewritten as 'the roles of people and AI agents' so nobody at Vanguard reads 'agent' as a service agent. Sizing is scoped to the confirmed set of domains, not every domain, and the roadmap is 'high-level' to match your Track 1 wording.",
+  "framing": "UPDATED from pages 3-4 as you asked, and sharpened with the Tech IDP language. Each Approach bullet is labelled with the exact phase name and timing from the workplan pages, so p2 and p3/p4 mirror each other line for line. Track 1 objective now leads with the CEO/CXO questions the Tech IDP answers (productivity of the technology dollar, where to rebalance to fund the future, capability standing vs. best in class) plus the 'holistic levers, not cost alone' positioning. Outputs reconciled against what the workplans actually deliver. Assets: added the AI value-at-stake sizing tool (it produces the headline Track 2 output but was missing); SoftwareX deliberately left off since it is not used in the plan."
+ }
+}
