@@ -1,0 +1,108 @@
+{
+ "s3_ranges_by_shape": {
+  "Text 25": "10 to 15%",
+  "Text 35": "10 to 25%"
+ },
+ "s3_note": "Note: Directional ranges applied only to the addressable slice of spend each lever can touch; not additive. Source: McKinsey Rapid IT cost diagnostic and Tech IDP typical impact ranges",
+ "swaps": [
+  {
+   "slide": 9,
+   "old": "Finance and HR data pull. No survey required",
+   "new": "Finance and HR data extracts plus 5-10 leadership interviews; capability survey optional"
+  },
+  {
+   "slide": 9,
+   "old": "minimum 10 responses, plus 5 to 8 calibration interviews",
+   "new": "minimum 10 responses; 5-8 calibration interviews optional"
+  },
+  {
+   "slide": 15,
+   "old": "AIQ, OMI and the developer survey need respondent lists confirmed in week 0 to report in week 2. Everything downstream moves if they slip.",
+   "new": "AIQ, OMI and the developer survey need respondent lists confirmed in week 0; AIQ's standard cycle runs four weeks, so survey results land mid-engagement. Everything downstream moves if lists slip."
+  }
+ ],
+ "s12_caption_by_shape": {
+  "Text 14": "Portfolio deep dive"
+ },
+ "page4_rows": [
+  [
+   "A. Project prioritization",
+   "Portfolio spread across run, change and regulatory spend",
+   "Categorize every project and investment by growth cycle and strategic linkage",
+   "Tech Performance Assessment",
+   "Pause or stop projects with no clear line to business impact"
+  ],
+  [
+   "B. Value capture",
+   "ROI, expense-to-revenue ratio, budgeted versus actual investment",
+   "Deep dive the five largest investments, tracking committed outcomes against actuals",
+   "Tech Performance Assessment",
+   "Reset funding on the largest programs and tighten expense management"
+  ],
+  [
+   "C. Engineering practices",
+   "Developer Velocity Index, time split between inner loop and outer loop",
+   "Survey developers across business units, benchmark, then interview engineering leads on root causes",
+   "Developer Velocity Index",
+   "Free developer capacity by automating environment setup and protecting focus time"
+  ],
+  [
+   "D. Performance optimization",
+   "Average contribution compared to expectation, anonymized",
+   "Analyze Jira and Git repository data to compare contribution against team median",
+   "ACCE contribution analytics (Jira and Git data)",
+   "Lift bottom-quartile contribution toward the team median"
+  ],
+  [
+   "E. Software delivery outcomes",
+   "DORA metrics: deploy frequency, lead time, change failure rate, time to recover",
+   "Collect existing team and org dashboards and compare against benchmarks",
+   "DORA benchmarks via existing dashboards",
+   "Cut defect rates through testing maturity and automated test coverage"
+  ]
+ ],
+ "page5_rows": [
+  [
+   "F. Org structure",
+   "Role ratios such as PM to developer, pyramid shape, spans and layers",
+   "Measure ratios by business unit and squad, compare against best in class",
+   "Operating Model Index; Tech Performance FTE baseline",
+   "Optimize spans of control and rebalance squad composition"
+  ],
+  [
+   "G. Location mix",
+   "Onshore versus offshore mix, share of co-located teams",
+   "Assess the spread of squads across geographies against industry benchmarks",
+   "Tech Performance Assessment (location benchmarks)",
+   "Shift the mix toward lower-cost locations and improve co-location"
+  ],
+  [
+   "H. FinOps",
+   "Cost of unused cloud resources, cloud cost per application, auto-scaling behavior",
+   "Review roughly 40 cloud financial management levers across consumption, sourcing and policy",
+   "Tech Performance Assessment (cloud cost benchmarks)",
+   "Remove double hosting and rationalize on-premise and cloud redundancy"
+  ],
+  [
+   "I. Supplier management",
+   "Vendor consolidation potential and right-sizing against specifications",
+   "Line-by-line review of major contracts covering terms, licenses and rates",
+   "Sourcing deep dive (contract teardowns)",
+   "Renegotiate and consolidate vendors, stop paying for unused capacity"
+  ],
+  [
+   "J. Demand policies",
+   "Software and hardware entitlement policies by team",
+   "Review spend against policy to find over-provisioned entitlements",
+   "Tech Performance Assessment (entitlement benchmarks)",
+   "Reduce license counts and extend hardware refresh timelines"
+  ],
+  [
+   "K. Process streamlining",
+   "Share of build pipeline automated, test coverage, AI generated code",
+   "Review the idea-to-live process end to end and identify automation and AI use cases",
+   "Tech and AI Quotient; AI process workflow tool",
+   "Automate the release pipeline and cut coding time with AI tooling"
+  ]
+ ]
+}
