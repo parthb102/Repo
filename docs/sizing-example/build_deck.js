@@ -216,9 +216,9 @@ const GATES = [
   ["Tech readiness",
    "Implementation plan reviewed with the tech team: dependencies listed, engineering on board, feasibility confirmed.",
    "No tech owner named, or a plan the engineering team has never seen."],
-  ["Approved tooling",
-   "Built with approved tools and existing vendor partnerships; a new tool only where nothing we have does the job.",
-   "A new vendor doing what an existing partner already does."],
+  ["Platform fit",
+   "Builds on the shared platform and existing vendor partnerships, so each initiative strengthens one backbone instead of adding another standalone tool.",
+   "A one-off build or a new vendor doing what the platform or an existing partner already does."],
 ];
 {
   const y0 = 1.80, rh = 0.94;
