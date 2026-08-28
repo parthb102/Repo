@@ -1,4 +1,4 @@
-// Worked-example sizing exhibit v2: Data Scientist role — simplified, larger type
+// Worked-example sizing exhibit v4: three-activity teaching example, self-contained funnel
 const pptxgen = require("pptxgenjs");
 
 /* tokens */
@@ -19,13 +19,13 @@ const T = (s, txt, o) => s.addText(txt, Object.assign({ isTextBox: true, fontFac
 /* ================================ SLIDE 1 ================================= */
 const s = pres.addSlide();
 s.background = { color: WHITE };
-s.addNotes("Worked example: how to size an AI business case bottom-up. Left: cost base -> map the week -> haircut to capturable -> prioritize. Right: what the first build costs, one-time and recurring. All numbers illustrative.");
+s.addNotes("Worked example: how to size an AI business case bottom-up, using three activities to keep it simple. Left: cost base -> map the week -> add the pools and haircut -> prioritize. Right: what the first build costs, one-time and recurring. All numbers illustrative.");
 
 /* header */
 T(s, "AI TRANSFORMATION  ·  HOW TO SIZE A BUSINESS CASE  ·  WORKED EXAMPLE", { x: 0.55, y: 0.26, w: 8.6, h: 0.22, fontSize: 9, bold: true, color: MUTED, charSpacing: 2 });
 T(s, [
-  { text: "Data scientists: a $38M cost base yields ", options: {} },
-  { text: "~$8.3M capturable", options: { color: AMBER, bold: true } },
+  { text: "Data scientists: three activities yield ", options: {} },
+  { text: "~$3M capturable", options: { color: AMBER, bold: true } },
   { text: " — for a ~$1M build", options: {} },
 ], { x: 0.55, y: 0.48, w: 10.4, h: 0.5, fontSize: 20, bold: true, color: INK });
 s.addShape("roundRect", { x: 11.0, y: 0.40, w: 1.83, h: 0.34, rectRadius: 0.17, fill: { color: INK } });
@@ -47,49 +47,45 @@ T(s, [
   { text: "   (e.g., 200 data-scientist FTEs × $190K fully loaded)", options: { fontSize: 11, color: MUTED } },
 ], { x: LX + 0.34, y: 1.62, w: 6.1, h: 0.48, valign: "middle" });
 
-/* 2 — map the week */
-step(LX, 2.30, 2, "Map the week — how much of each activity can AI address?");
-T(s, "bar = share of the week  \u00b7  dark fill = what AI can address today  \u00b7  $ = that pool per year", { x: LX + 0.34, y: 2.56, w: 6.0, h: 0.2, fontSize: 9, italic: true, color: FAINT });
+/* 2 — map the week (three example activities) */
+step(LX, 2.32, 2, "Map the week — how much of each activity can AI address?");
+T(s, "bar = share of the week  ·  dark fill = what AI can address today  ·  $ = that pool per year", { x: LX + 0.34, y: 2.60, w: 6.0, h: 0.2, fontSize: 9, italic: true, color: FAINT });
 const ACT = [
-  { name: "Data prep & cleaning",      time: 30, addr: 60, poolM: 6.8, dk: TEAL_DK,  lt: TEAL_LT },
-  { name: "Model build & experiments", time: 20, addr: 35, poolM: 2.7, dk: AMBER_DK, lt: AMBER_LT },
-  { name: "Exploratory analysis",      time: 15, addr: 40, poolM: 2.3, dk: AMBER_DK, lt: AMBER_LT },
-  { name: "Reporting & documentation", time: 15, addr: 60, poolM: 3.4, dk: TEAL_DK,  lt: TEAL_LT },
-  { name: "Stakeholder alignment",     time: 12, addr: 10, poolM: 0.5, dk: ROSE_DK,  lt: ROSE_LT },
-  { name: "Ad-hoc requests",           time:  8, addr: 45, poolM: 1.4, dk: AMBER_DK, lt: AMBER_LT },
+  { name: "Data prep & cleaning",  time: 30, addr: 60, poolM: 3, dk: TEAL_DK,  lt: TEAL_LT },
+  { name: "Exploratory analysis",  time: 15, addr: 40, poolM: 2, dk: AMBER_DK, lt: AMBER_LT },
+  { name: "Stakeholder alignment", time: 12, addr: 10, poolM: 1, dk: ROSE_DK,  lt: ROSE_LT },
 ];
 {
-  const y0 = 2.78, rh = 0.29, bx = LX + 2.42, scale = 2.5 / 30;
+  const y0 = 2.88, rh = 0.46, bx = LX + 2.42, scale = 2.5 / 30;
   ACT.forEach((r, i) => {
     const y = y0 + i * rh;
-    T(s, r.name, { x: LX + 0.34, y, w: 2.02, h: 0.26, fontSize: 10.5, color: INK, valign: "middle" });
+    T(s, r.name, { x: LX + 0.34, y, w: 2.02, h: 0.34, fontSize: 12.5, color: INK, valign: "middle" });
     const wT = r.time * scale, wA = wT * r.addr / 100;
-    s.addShape("rect", { x: bx, y: y + 0.055, w: wT, h: 0.16, fill: { color: r.lt } });
-    s.addShape("rect", { x: bx, y: y + 0.055, w: wA, h: 0.16, fill: { color: r.dk } });
-    T(s, "$" + r.poolM.toFixed(1) + "M", { x: bx + wT + 0.1, y, w: 0.95, h: 0.26, fontSize: 11, bold: true, color: r.dk, valign: "middle" });
+    s.addShape("rect", { x: bx, y: y + 0.06, w: wT, h: 0.22, fill: { color: r.lt } });
+    s.addShape("rect", { x: bx, y: y + 0.06, w: wA, h: 0.22, fill: { color: r.dk } });
+    T(s, "$" + r.poolM + "M", { x: bx + wT + 0.12, y, w: 0.95, h: 0.34, fontSize: 13, bold: true, color: r.dk, valign: "middle" });
   });
 }
 
-/* 3 — haircuts, in plain language */
-step(LX, 4.60, 3, "Add the pools up — then haircut to what you can capture");
+/* 3 — add up, then haircut */
+step(LX, 4.50, 3, "Add the pools up — then haircut to what you can capture");
 {
-  const bx = LX + 2.42, scale = 2.5 / 17.1;
-  let y = 4.90;
-  // sum bar: the six pools from step 2, stacked in the same colours
-  T(s, "All six pools added up", { x: LX + 0.34, y, w: 2.02, h: 0.26, fontSize: 11, color: INK, valign: "middle" });
+  const bx = LX + 2.42, scale = 2.5 / 6.0;
+  let y = 4.82;
+  // sum bar: the three pools from step 2, stacked in the same colours
+  T(s, "The three pools together", { x: LX + 0.34, y, w: 2.02, h: 0.26, fontSize: 11, color: INK, valign: "middle" });
   let sx = bx;
   ACT.forEach(r => {
-    const w = r.poolM * scale - 0.02;
-    s.addShape("rect", { x: sx, y: y + 0.045, w, h: 0.18, fill: { color: r.dk } });
+    s.addShape("rect", { x: sx, y: y + 0.045, w: r.poolM * scale - 0.02, h: 0.18, fill: { color: r.dk } });
     sx += r.poolM * scale;
   });
-  T(s, "\u2248$17M", { x: sx + 0.08, y, w: 2.2, h: 0.26, fontSize: 11.5, bold: true, color: TEAL_DK, valign: "middle" });
+  T(s, "$6M", { x: sx + 0.08, y, w: 2.2, h: 0.26, fontSize: 11.5, bold: true, color: TEAL_DK, valign: "middle" });
   y += 0.28;
   const items = [
-    { cut: "\u2212 you already cover some of this today \u2014 tools in place, learned via interviews  (\u221225%)" },
-    { label: "Truly new opportunity", vM: 12.8, txt: "$12.8M", fill: TEAL, lc: TEAL_DK },
-    { cut: "\u2212 not everything gets captured \u2014 people adopt gradually, freed time is reinvested  (\u221235%)" },
-    { label: "Capturable", vM: 8.3, txt: "$8.3M  (\u224822% of cost base)", fill: AMBER, lc: AMBER_DK, bold: true },
+    { cut: "− you already cover some of this today — tools in place, learned via interviews  (−25%)" },
+    { label: "Truly new opportunity", vM: 4.5, txt: "$4.5M", fill: TEAL, lc: TEAL_DK },
+    { cut: "− not everything gets captured — people adopt gradually, freed time is reinvested  (−35%)" },
+    { label: "Capturable", vM: 3.0, txt: "~$3M / yr", fill: AMBER, lc: AMBER_DK, bold: true },
   ];
   items.forEach(it => {
     if (it.cut) {
@@ -103,18 +99,18 @@ step(LX, 4.60, 3, "Add the pools up — then haircut to what you can capture");
   });
 }
 
-/* 4 — prioritize */
-step(LX, 6.24, 4, "Prioritize by size × ease — go easy-first");
+/* 4 — prioritize the same three */
+step(LX, 6.22, 4, "Prioritize by size × ease — go easy-first");
 {
   const rows = [
-    ["1.", "Data prep & cleaning", "$6.8M pool — the agentic backbone starts here"],
-    ["2.", "Reporting & documentation", "$3.4M pool — fast follow on the backbone"],
-    ["3.", "Model build & experiments", "$2.7M pool — wave 2"],
+    ["1.", "Data prep & cleaning", "$3M pool, easy — the agent build starts here", TEAL_DK],
+    ["2.", "Exploratory analysis", "$2M pool, medium — fast follow on the same backbone", AMBER_DK],
+    ["3.", "Stakeholder alignment", "$1M pool, hard and human-led — don’t build here yet", ROSE_DK],
   ];
-  const y0 = 6.52, rh = 0.25;
+  const y0 = 6.50, rh = 0.25;
   rows.forEach((r, i) => {
     const y = y0 + i * rh;
-    T(s, r[0], { x: LX + 0.36, y, w: 0.24, h: 0.22, fontSize: 10.5, bold: true, color: TEAL_DK, valign: "middle" });
+    T(s, r[0], { x: LX + 0.36, y, w: 0.24, h: 0.22, fontSize: 10.5, bold: true, color: r[3], valign: "middle" });
     T(s, [
       { text: r[1] + "   ", options: { bold: true } },
       { text: r[2], options: { color: MUTED } },
@@ -137,7 +133,6 @@ T(s, [
   { text: "  one-time", options: { fontSize: 11, color: MUTED } },
 ], { x: RX, y: 2.34, w: RW, h: 0.44, valign: "middle" });
 {
-  // phase strip
   const phases = [["PLAN", 4], ["BUILD", 10], ["PILOT", 6], ["DEPLOY", 12]];
   const shades = ["8E9AE8", "7583E4", "5A6BE0", "3D4BB5"];
   const totW = 32, gap = 0.04, availW = RW - gap * 3, y = 2.92, h = 0.42;
@@ -187,7 +182,7 @@ T(s, [
 }
 
 /* footnote */
-T(s, "Illustrative — a walkthrough of the method, not a plan of record. Pools rounded to $0.1M. Detailed assumptions: backup slide.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
+T(s, "Illustrative — a walkthrough of the method, not a plan of record. Detailed assumptions: backup slide.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
 
 /* ================================ SLIDE 2 ================================= */
 const s2 = pres.addSlide();
@@ -205,7 +200,7 @@ const LHS_A = [
   ["Addressability", "Anchored to observed tool performance: 30–50% coding-assistant speedups, production-proven genAI reporting, near-zero for relationship work."],
   ["Haircut 1 — already covered today (−25%)", "What existing tools and automations already handle — learned through interviews and usage data — plus data-access and governance constraints."],
   ["Haircut 2 — capture (−35%)", "People adopt gradually (20–40% is typical unmanaged), and freed capacity is often reinvested in backlog rather than released."],
-  ["Capturable ≠ cost-out", "$8.3M (~22% of cost base) is capacity — realized as hiring avoidance, throughput, or redeployment. Releasing vs reinvesting it is a leadership decision."],
+  ["Capturable ≠ cost-out", "Capturable value is capacity — realized as hiring avoidance, throughput, or redeployment. Releasing vs reinvesting it is a leadership decision. Three activities are shown for clarity; a full sizing maps the whole week."],
 ];
 const RHS_A = [
   ["Team cost", "Blended fully-loaded ~$220K/yr (~$4,200 per FTE-week) across product, AI/ML engineering, data engineering, SME and change roles; phase costs = FTE-weeks × rate."],
