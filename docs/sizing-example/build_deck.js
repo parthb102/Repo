@@ -193,7 +193,7 @@ T(sc, "AI TRANSFORMATION  \u00b7  INVESTMENT-CASE REVIEW", { x: 0.55, y: 0.26, w
 T(sc, "The AI reviewer\u2019s checklist \u2014 five gates before sign-off", { x: 0.55, y: 0.48, w: 10.2, h: 0.42, fontSize: 20, bold: true, color: INK });
 sc.addShape("roundRect", { x: 11.0, y: 0.40, w: 1.83, h: 0.34, rectRadius: 0.17, fill: { color: TEAL_DK } });
 T(sc, "FOR APPROVERS", { x: 11.0, y: 0.40, w: 1.83, h: 0.34, fontSize: 8.5, bold: true, color: WHITE, align: "center", valign: "middle", charSpacing: 1.5 });
-T(sc, "Finance approves the dollars. This review checks the AI substance \u2014 so sign-off is never a rubber stamp. Teams: run the same five gates before you submit.", { x: 0.55, y: 0.98, w: 11.6, h: 0.24, fontSize: 11, color: MUTED });
+T(sc, "Finance approves the dollars separately \u2014 this review makes sure sign-off is more than a rubber stamp. Teams: check these five before you submit.", { x: 0.55, y: 0.98, w: 11.6, h: 0.24, fontSize: 11, color: MUTED });
 
 /* table geometry */
 const C1 = 0.55, C1W = 3.05;   // gate
@@ -204,21 +204,21 @@ T(sc, "WHAT MUST BE TRUE", { x: C2, y: 1.48, w: C2W, h: 0.2, fontSize: 9, bold: 
 T(sc, "SENT BACK WHEN\u2026", { x: C3, y: 1.48, w: C3W, h: 0.2, fontSize: 9, bold: true, color: FAINT, charSpacing: 2 });
 
 const GATES = [
-  ["AI creates the value",
-   "The problem is clear and the mechanism is explicit: which workflow, what the AI or agent actually does, and why that produces the number.",
-   "\u201cAI\u201d only appears in the title \u2014 the value really comes from ordinary process change."],
-  ["The value math holds",
-   "Sized bottom-up from a validated baseline with haircuts applied \u2014 and the value is claimed once, with overlaps adjusted in sequencing.",
-   "A top-down percentage on an unvalidated baseline, or the same savings counted by two initiatives."],
-  ["The full AI cost is in",
-   "One-time and recurring: build, platform and change management \u2014 plus tokens, licensing and a run team on the recurring side.",
-   "No token or run-cost line \u2014 the case only prices the build."],
-  ["Tech is pressure-tested",
-   "Dependencies are named, platform and engineering are engaged, and the implementation plan has been reviewed for feasibility \u2014 the CTO bar, carried here.",
-   "No named tech owner, or a plan engineering has never seen."],
-  ["It uses the standard stack",
-   "Built on approved platforms and existing vendor partnerships; a new tool only where no standard exists.",
-   "A new vendor duplicating a partnership we already have \u2014 one more random tool."],
+  ["Clear AI value",
+   "Clear problem statement, and a plain explanation of what the AI actually does and where the savings come from.",
+   "AI is in the title, but the savings really come from ordinary process change."],
+  ["Sound sizing",
+   "Bottom-up sizing from a baseline the team has validated, with haircuts applied \u2014 and no savings counted twice across initiatives.",
+   "A top-down percentage on a baseline nobody has checked, or savings another initiative already claims."],
+  ["Complete costs",
+   "Full cost picture, one-time and recurring \u2014 build, platform and change management, plus tokens, licensing and support after go-live.",
+   "The case prices the build but not the running costs \u2014 no line for tokens or support."],
+  ["Tech readiness",
+   "Implementation plan reviewed with the tech team: dependencies listed, engineering on board, feasibility confirmed.",
+   "No tech owner named, or a plan the engineering team has never seen."],
+  ["Standard tools",
+   "Built with approved tools and existing vendor partnerships; a new tool only where nothing we have does the job.",
+   "A new vendor doing what an existing partner already does."],
 ];
 {
   const y0 = 1.80, rh = 0.94;
@@ -236,12 +236,11 @@ const GATES = [
 /* outcome strip */
 sc.addShape("roundRect", { x: 0.55, y: 6.60, w: 12.25, h: 0.52, rectRadius: 0.06, fill: { color: TEAL_BG } });
 T(sc, [
-  { text: "All five hold \u2192 approved.   ", options: { bold: true, color: TEAL_DK } },
-  { text: "Any gap \u2192 back to the team with the gap named \u2014 resubmit when it\u2019s closed. ", options: { color: INK } },
-  { text: "Financial approval runs separately.", options: { color: MUTED } },
+  { text: "Pass all five \u2192 approved.   ", options: { bold: true, color: TEAL_DK } },
+  { text: "Miss one \u2192 it goes back with a note on what\u2019s missing \u2014 resubmit once it\u2019s fixed.", options: { color: INK } },
 ], { x: 0.79, y: 6.60, w: 11.8, h: 0.52, fontSize: 11, valign: "middle" });
 
-T(sc, "Stuck on a gate? Bring it to office hours \u2014 don\u2019t wait for the review to find out.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
+T(sc, "Stuck on one of these? Bring it to office hours \u2014 don\u2019t wait for the review to catch it.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
 
 /* ============================ SLIDE 3: ASSUMPTIONS BACKUP ============================ */
 const s2 = pres.addSlide();
