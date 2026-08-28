@@ -216,7 +216,7 @@ const GATES = [
   ["Tech readiness",
    "Implementation plan reviewed with the tech team: dependencies listed, engineering on board, feasibility confirmed.",
    "No tech owner named, or a plan the engineering team has never seen."],
-  ["Standard tools",
+  ["Approved tooling",
    "Built with approved tools and existing vendor partnerships; a new tool only where nothing we have does the job.",
    "A new vendor doing what an existing partner already does."],
 ];
