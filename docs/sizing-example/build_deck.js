@@ -184,7 +184,66 @@ T(s, [
 /* footnote */
 T(s, "Illustrative — a walkthrough of the method, not a plan of record. Detailed assumptions: backup slide.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
 
-/* ================================ SLIDE 2 ================================= */
+/* ============================ SLIDE 2: REVIEWER CHECKLIST ============================ */
+const sc = pres.addSlide();
+sc.background = { color: WHITE };
+sc.addNotes("The AI reviewer's checklist: the five gates the AI & automation approver checks before sign-off. Finance approves the dollars separately; this review checks the AI substance so approval is not a rubber stamp. Teams use the same list as a pre-flight check before submitting.");
+
+T(sc, "AI TRANSFORMATION  \u00b7  INVESTMENT-CASE REVIEW", { x: 0.55, y: 0.26, w: 8.6, h: 0.22, fontSize: 9, bold: true, color: MUTED, charSpacing: 2 });
+T(sc, "The AI reviewer\u2019s checklist \u2014 five gates before sign-off", { x: 0.55, y: 0.48, w: 10.2, h: 0.42, fontSize: 20, bold: true, color: INK });
+sc.addShape("roundRect", { x: 11.0, y: 0.40, w: 1.83, h: 0.34, rectRadius: 0.17, fill: { color: TEAL_DK } });
+T(sc, "FOR APPROVERS", { x: 11.0, y: 0.40, w: 1.83, h: 0.34, fontSize: 8.5, bold: true, color: WHITE, align: "center", valign: "middle", charSpacing: 1.5 });
+T(sc, "Finance approves the dollars. This review checks the AI substance \u2014 so sign-off is never a rubber stamp. Teams: run the same five gates before you submit.", { x: 0.55, y: 0.98, w: 11.6, h: 0.24, fontSize: 11, color: MUTED });
+
+/* table geometry */
+const C1 = 0.55, C1W = 3.05;   // gate
+const C2 = 3.85, C2W = 4.55;   // what must be true
+const C3 = 8.70, C3W = 4.10;   // sent back when
+T(sc, "GATE", { x: C1 + 0.40, y: 1.48, w: C1W - 0.40, h: 0.2, fontSize: 9, bold: true, color: FAINT, charSpacing: 2 });
+T(sc, "WHAT MUST BE TRUE", { x: C2, y: 1.48, w: C2W, h: 0.2, fontSize: 9, bold: true, color: FAINT, charSpacing: 2 });
+T(sc, "SENT BACK WHEN\u2026", { x: C3, y: 1.48, w: C3W, h: 0.2, fontSize: 9, bold: true, color: FAINT, charSpacing: 2 });
+
+const GATES = [
+  ["AI creates the value",
+   "The problem is clear and the mechanism is explicit: which workflow, what the AI or agent actually does, and why that produces the number.",
+   "\u201cAI\u201d only appears in the title \u2014 the value really comes from ordinary process change."],
+  ["The value math holds",
+   "Sized bottom-up from a validated baseline with haircuts applied \u2014 and the value is claimed once, with overlaps adjusted in sequencing.",
+   "A top-down percentage on an unvalidated baseline, or the same savings counted by two initiatives."],
+  ["The full AI cost is in",
+   "One-time and recurring: build, platform and change management \u2014 plus tokens, licensing and a run team on the recurring side.",
+   "No token or run-cost line \u2014 the case only prices the build."],
+  ["Tech is pressure-tested",
+   "Dependencies are named, platform and engineering are engaged, and the implementation plan has been reviewed for feasibility \u2014 the CTO bar, carried here.",
+   "No named tech owner, or a plan engineering has never seen."],
+  ["It uses the standard stack",
+   "Built on approved platforms and existing vendor partnerships; a new tool only where no standard exists.",
+   "A new vendor duplicating a partnership we already have \u2014 one more random tool."],
+];
+{
+  const y0 = 1.80, rh = 0.94;
+  GATES.forEach((g, i) => {
+    const y = y0 + i * rh;
+    sc.addShape("line", { x: 0.55, y: y - 0.06, w: 12.25, h: 0, line: { color: LINE, width: 0.75 } });
+    sc.addShape("ellipse", { x: C1, y: y + 0.08, w: 0.26, h: 0.26, fill: { color: TEAL_DK } });
+    T(sc, String(i + 1), { x: C1, y: y + 0.08, w: 0.26, h: 0.26, fontSize: 11, bold: true, color: WHITE, align: "center", valign: "middle" });
+    T(sc, g[0], { x: C1 + 0.40, y: y + 0.06, w: C1W - 0.40, h: 0.56, fontSize: 12.5, bold: true, color: INK, valign: "top" });
+    T(sc, g[1], { x: C2, y: y + 0.06, w: C2W, h: 0.80, fontSize: 10, color: INK, valign: "top" });
+    T(sc, g[2], { x: C3, y: y + 0.06, w: C3W, h: 0.80, fontSize: 10, italic: true, color: AMBER_DK, valign: "top" });
+  });
+}
+
+/* outcome strip */
+sc.addShape("roundRect", { x: 0.55, y: 6.60, w: 12.25, h: 0.52, rectRadius: 0.06, fill: { color: TEAL_BG } });
+T(sc, [
+  { text: "All five hold \u2192 approved.   ", options: { bold: true, color: TEAL_DK } },
+  { text: "Any gap \u2192 back to the team with the gap named \u2014 resubmit when it\u2019s closed. ", options: { color: INK } },
+  { text: "Financial approval runs separately.", options: { color: MUTED } },
+], { x: 0.79, y: 6.60, w: 11.8, h: 0.52, fontSize: 11, valign: "middle" });
+
+T(sc, "Stuck on a gate? Bring it to office hours \u2014 don\u2019t wait for the review to find out.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
+
+/* ============================ SLIDE 3: ASSUMPTIONS BACKUP ============================ */
 const s2 = pres.addSlide();
 s2.background = { color: WHITE };
 s2.addNotes("Backup: the assumptions behind every number on the worked example. Reuse the structure, not the numbers - replace each assumption with your own role's data.");
