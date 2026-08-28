@@ -48,38 +48,49 @@ T(s, [
 ], { x: LX + 0.34, y: 1.62, w: 6.1, h: 0.48, valign: "middle" });
 
 /* 2 — map the week */
-step(LX, 2.32, 2, "Map the week — how much of each activity can AI address?");
-T(s, "bar = share of the week  ·  dark fill = what AI can address today  ·  $ = that pool per year", { x: LX + 0.34, y: 2.60, w: 6.0, h: 0.2, fontSize: 9, italic: true, color: FAINT });
+step(LX, 2.30, 2, "Map the week — how much of each activity can AI address?");
+T(s, "bar = share of the week  \u00b7  dark fill = what AI can address today  \u00b7  $ = that pool per year", { x: LX + 0.34, y: 2.56, w: 6.0, h: 0.2, fontSize: 9, italic: true, color: FAINT });
+const ACT = [
+  { name: "Data prep & cleaning",      time: 30, addr: 60, poolM: 6.8, dk: TEAL_DK,  lt: TEAL_LT },
+  { name: "Model build & experiments", time: 20, addr: 35, poolM: 2.7, dk: AMBER_DK, lt: AMBER_LT },
+  { name: "Exploratory analysis",      time: 15, addr: 40, poolM: 2.3, dk: AMBER_DK, lt: AMBER_LT },
+  { name: "Reporting & documentation", time: 15, addr: 60, poolM: 3.4, dk: TEAL_DK,  lt: TEAL_LT },
+  { name: "Stakeholder alignment",     time: 12, addr: 10, poolM: 0.5, dk: ROSE_DK,  lt: ROSE_LT },
+  { name: "Ad-hoc requests",           time:  8, addr: 45, poolM: 1.4, dk: AMBER_DK, lt: AMBER_LT },
+];
 {
-  const rows = [
-    { name: "Data prep & cleaning",  time: 30, addr: 60, pool: "$6.8M", dk: TEAL_DK,  lt: TEAL_LT,  vc: TEAL_DK },
-    { name: "Exploratory analysis",  time: 15, addr: 40, pool: "$2.3M", dk: AMBER_DK, lt: AMBER_LT, vc: AMBER_DK },
-    { name: "Stakeholder alignment", time: 12, addr: 10, pool: "$0.5M", dk: ROSE_DK,  lt: ROSE_LT,  vc: ROSE_DK },
-  ];
-  const y0 = 2.88, rh = 0.46, bx = LX + 2.42, scale = 2.5 / 30;
-  rows.forEach((r, i) => {
+  const y0 = 2.78, rh = 0.29, bx = LX + 2.42, scale = 2.5 / 30;
+  ACT.forEach((r, i) => {
     const y = y0 + i * rh;
-    T(s, r.name, { x: LX + 0.34, y, w: 2.02, h: 0.34, fontSize: 12.5, color: INK, valign: "middle" });
+    T(s, r.name, { x: LX + 0.34, y, w: 2.02, h: 0.26, fontSize: 10.5, color: INK, valign: "middle" });
     const wT = r.time * scale, wA = wT * r.addr / 100;
-    s.addShape("rect", { x: bx, y: y + 0.06, w: wT, h: 0.22, fill: { color: r.lt } });
-    s.addShape("rect", { x: bx, y: y + 0.06, w: wA, h: 0.22, fill: { color: r.dk } });
-    T(s, r.pool, { x: bx + wT + 0.12, y, w: 0.95, h: 0.34, fontSize: 13, bold: true, color: r.vc, valign: "middle" });
+    s.addShape("rect", { x: bx, y: y + 0.055, w: wT, h: 0.16, fill: { color: r.lt } });
+    s.addShape("rect", { x: bx, y: y + 0.055, w: wA, h: 0.16, fill: { color: r.dk } });
+    T(s, "$" + r.poolM.toFixed(1) + "M", { x: bx + wT + 0.1, y, w: 0.95, h: 0.26, fontSize: 11, bold: true, color: r.dk, valign: "middle" });
   });
-  T(s, "…plus model build, reporting and ad-hoc work — all six pools together: $17M", { x: LX + 0.34, y: y0 + 3 * rh + 0.02, w: 6.0, h: 0.2, fontSize: 9.5, italic: true, color: MUTED });
 }
 
 /* 3 — haircuts, in plain language */
-step(LX, 4.56, 3, "Haircut it to what you can actually capture");
+step(LX, 4.60, 3, "Add the pools up — then haircut to what you can capture");
 {
-  const bx = LX + 2.42, scale = 2.5 / 17.0;
+  const bx = LX + 2.42, scale = 2.5 / 17.1;
+  let y = 4.90;
+  // sum bar: the six pools from step 2, stacked in the same colours
+  T(s, "All six pools added up", { x: LX + 0.34, y, w: 2.02, h: 0.26, fontSize: 11, color: INK, valign: "middle" });
+  let sx = bx;
+  ACT.forEach(r => {
+    const w = r.poolM * scale - 0.02;
+    s.addShape("rect", { x: sx, y: y + 0.045, w, h: 0.18, fill: { color: r.dk } });
+    sx += r.poolM * scale;
+  });
+  T(s, "\u2248$17M", { x: sx + 0.08, y, w: 2.2, h: 0.26, fontSize: 11.5, bold: true, color: TEAL_DK, valign: "middle" });
+  y += 0.28;
   const items = [
-    { label: "All six activity pools", vM: 17.0, txt: "$17.0M", fill: TEAL, lc: TEAL_DK },
-    { cut: "− you already cover some of this today — tools in place, learned via interviews  (−25%)" },
+    { cut: "\u2212 you already cover some of this today \u2014 tools in place, learned via interviews  (\u221225%)" },
     { label: "Truly new opportunity", vM: 12.8, txt: "$12.8M", fill: TEAL, lc: TEAL_DK },
-    { cut: "− not everything gets captured — people adopt gradually, freed time is reinvested  (−35%)" },
-    { label: "Capturable", vM: 8.3, txt: "$8.3M  (≈22% of cost base)", fill: AMBER, lc: AMBER_DK, bold: true },
+    { cut: "\u2212 not everything gets captured \u2014 people adopt gradually, freed time is reinvested  (\u221235%)" },
+    { label: "Capturable", vM: 8.3, txt: "$8.3M  (\u224822% of cost base)", fill: AMBER, lc: AMBER_DK, bold: true },
   ];
-  let y = 4.86;
   items.forEach(it => {
     if (it.cut) {
       T(s, it.cut, { x: bx - 1.3, y, w: 5.4, h: 0.2, fontSize: 9.5, italic: true, color: MUTED, valign: "middle" });
@@ -176,7 +187,7 @@ T(s, [
 }
 
 /* footnote */
-T(s, "Illustrative — a walkthrough of the method, not a plan of record. Detailed assumptions: backup slide.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
+T(s, "Illustrative — a walkthrough of the method, not a plan of record. Pools rounded to $0.1M. Detailed assumptions: backup slide.", { x: 0.55, y: 7.30, w: 12.3, h: 0.18, fontSize: 8, color: FAINT });
 
 /* ================================ SLIDE 2 ================================= */
 const s2 = pres.addSlide();
