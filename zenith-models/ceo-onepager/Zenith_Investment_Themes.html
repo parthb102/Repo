@@ -1,0 +1,104 @@
+<title>Zenith Investment Themes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root {
+    --paper: #FFFFFF; --ink: #1F2933; --muted: #5B6B7C; --ground: #EEF1F5; --line: #D3D9E1;
+    --navy: #1B2A4A; --slate: #3D5A80; --amber: #B8741A; --amber-bg: #FBF3E6; --head-bg: #1B2A4A; --head-fg: #FFFFFF;
+    --serif: "Source Serif 4", "Cambria", Georgia, serif;
+    --sans: "IBM Plex Sans", "Calibri", "Segoe UI", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #111827; --ink: #E5EAF1; --muted: #9AA7B8; --ground: #1B2537; --line: #2E3B52;
+      --navy: #C9D6EA; --slate: #9DB4D6; --amber: #E0A24A; --amber-bg: #2A2114; --head-bg: #2A3A5C; --head-fg: #F3F6FA;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #111827; --ink: #E5EAF1; --muted: #9AA7B8; --ground: #1B2537; --line: #2E3B52;
+    --navy: #C9D6EA; --slate: #9DB4D6; --amber: #E0A24A; --amber-bg: #2A2114; --head-bg: #2A3A5C; --head-fg: #F3F6FA;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+  .page { max-width: 1180px; margin: 0 auto; padding: 40px 32px 48px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); font-weight: 600; margin: 0 0 10px; }
+  h1 { font-family: var(--serif); font-weight: 700; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.25; color: var(--navy); margin: 0 0 10px; text-wrap: balance; max-width: 34ch; }
+  .sub { color: var(--muted); margin: 0 0 28px; font-size: 14px; }
+  .band { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .panel { padding: 22px 24px; border-radius: 6px; }
+  .panel.themes { border: 1px solid var(--line); background: var(--paper); }
+  .panel.shape { background: var(--ground); }
+  .panel.deps { background: var(--amber-bg); }
+  .stack { display: grid; gap: 20px; }
+  h2 { font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--navy); margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
+  .panel.deps h2 { color: var(--amber); }
+  h2 .dot { width: 12px; height: 12px; border-radius: 50%; background: currentColor; flex: none; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  li { max-width: 68ch; }
+  li strong { color: var(--navy); font-weight: 600; }
+  .panel.deps li strong { color: var(--amber); }
+  li em { color: var(--muted); }
+  .panel.shape li, .panel.deps li { font-size: 14px; }
+  .snapshot { margin-top: 24px; }
+  .snapshot h2 { color: var(--slate); }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; min-width: 820px; font-size: 13.5px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  thead th { background: var(--head-bg); color: var(--head-fg); font-family: var(--serif); font-size: 14px; font-weight: 600; }
+  tbody th { background: var(--ground); color: var(--slate); font-weight: 600; white-space: nowrap; width: 12ch; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  .foot { margin-top: 20px; font-size: 12.5px; color: var(--muted); font-style: italic; max-width: 100ch; }
+  @media (max-width: 900px) { .band { grid-template-columns: 1fr; } h1 { max-width: none; } }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+<main class="page">
+  <p class="eyebrow">AI program  ·  Investment requirements  ·  Emerging themes</p>
+  <h1>Delivering the AI program needs dedicated teams and incremental funding in the tens of millions — and some of the savings will arrive through different routes than expected.</h1>
+  <p class="sub">Cross-workstream view for discussion  ·  investment cases in build with Finance</p>
+
+  <section class="band">
+    <div class="panel themes">
+      <h2><span class="dot"></span>What we are seeing across workstreams</h2>
+      <ul>
+<li><strong>Dedicated resourcing is required.</strong> None of this can be absorbed by existing teams. Each initiative needs a standing team to build it and a small team to run it. The ask is people as much as money.</li>
+<li><strong>Incremental funding is needed — tens of millions, not single digits.</strong> Run costs recur and scale with usage, so the annual bill rises as adoption succeeds; build spend comes on top.</li>
+<li><strong>Spend is front-loaded; value ramps behind it.</strong> Build spend lands ahead of benefits, so early periods show cost before savings even for cases with strong steady-state economics. Ramp profiles are being set per initiative with Finance.</li>
+<li><strong>Some savings will not come from the areas expected.</strong> Servicing: much of the cost base is outsourced, so savings come through vendor contracts, not in-house headcount. Engineering and Sales: value arrives largely as capacity and acceleration, which count as savings only once Finance agrees how it is captured.</li>
+      </ul>
+    </div>
+    <div class="stack">
+      <div class="panel shape">
+        <h2><span class="dot"></span>What the investment looks like</h2>
+        <ul>
+<li><strong>Build</strong> <em>(one-time)</em>: a dedicated delivery team per initiative; platform, integration and data set-up; vendor builds where buying beats building.</li>
+<li><strong>Run</strong> <em>(recurring)</em>: model usage that grows with adoption; subscriptions and vendor support; a small standing team with monitoring and controls.</li>
+<li><strong>Enable</strong> <em>(people)</em>: training and change in the business; adoption champions in engineering; tracking of benefits and of service, quality and loss guardrails.</li>
+        </ul>
+      </div>
+      <div class="panel deps">
+        <h2><span class="dot"></span>Dependencies and decisions in flight</h2>
+        <ul>
+<li><strong>Accounting treatment.</strong> Jamie and Tom are working the capitalization question (build labour and platforms as CapEx vs expensed). It changes P&amp;L phasing, not the underlying economics.</li>
+<li><strong>Funding mechanism.</strong> Central transformation pool vs business-unit budgets is still open; it decides who carries the build cost and who carries the run cost as it grows.</li>
+<li><strong>Finance engagement.</strong> Finance is embedded in every case, validating baselines, vendor rates and the approval package. Run-cost inputs (usage, vendor, platform rates) are planning assumptions until usage data and rates land — the inputs most likely to move.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="snapshot">
+    <h2><span class="dot"></span>Workstream snapshot</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th scope="col"></th><th scope="col">Servicing</th><th scope="col">Engineering (SDLC)</th><th scope="col">Sales</th><th scope="col">Risk &amp; Compliance</th></tr></thead>
+        <tbody>
+<tr><th scope="row">Scope</th><td>Six — contact avoidance, self-serve, AI-assisted agents, workforce management, back-office automation, non-people cost flow-through</td><td>Two — AI-driven development (agentic loop engineering), product-lifecycle redesign</td><td>Two — underwriting and pricing for the front book, small-business long tail via partners</td><td>Portfolio being consolidated — existing Helix program plus fraud, financial-crime, compliance, credit and collections</td></tr>
+<tr><th scope="row">Where value lands</th><td>Front- and back-office servicing cost, including outsourced vendor and non-people cost pools</td><td>Engineering and product capacity</td><td>Revenue quality and seller capacity</td><td>Operating cost, third-party spend and transaction loss</td></tr>
+<tr><th scope="row">Case readiness</th><td>First full case drafted; Finance validating baselines and rates; decision gate this week</td><td>Structured; baselines landing; gate alongside</td><td>Drivers set; baselines and vendor quotes landing; gate alongside</td><td>Portfolio being refreshed; gate the following week</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="foot">Draft for discussion — themes only. Investment cases are being built per initiative with Finance; figures follow once sponsors, Finance and Jamie are aligned.</p>
+</main>
